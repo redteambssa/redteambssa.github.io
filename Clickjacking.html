@@ -8,71 +8,92 @@
     body {
         margin: 0;
         font-family: "Segoe UI", Arial, sans-serif;
-        background-color: #0f172a;
+        background-color: #000;
         color: #e5e7eb;
     }
 
     .container {
-        max-width: 1100px;
-        margin: 30px auto;
-        padding: 25px;
+        max-width: 1200px;
+        margin: 15px auto;
+        padding: 20px;
         background: #020617;
         border-radius: 10px;
-        box-shadow: 0 0 25px rgba(0,0,0,0.6);
+        box-shadow: 0 0 20px rgba(0,0,0,0.8);
+    }
+
+    /* LOGO */
+    .logo {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .logo img {
+        max-height: 90px;
     }
 
     h1 {
-        margin-top: 0;
-        color: #38bdf8;
-        font-size: 26px;
+        margin: 10px 0 5px 0;
+        color: #ef4444;
+        font-size: 24px;
+        text-align: center;
+    }
+
+    .subtitle {
+        text-align: center;
+        font-size: 13px;
+        color: #94a3b8;
+        margin-bottom: 15px;
     }
 
     p {
+        font-size: 13px;
         color: #cbd5f5;
-        line-height: 1.6;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
 
     .input-group {
         display: flex;
-        gap: 10px;
-        margin-top: 15px;
+        gap: 8px;
+        margin: 10px 0;
     }
 
     input {
         flex: 1;
-        padding: 10px;
+        padding: 8px;
         border-radius: 6px;
         border: none;
-        font-size: 14px;
+        font-size: 13px;
         outline: none;
     }
 
     button {
-        padding: 10px 22px;
-        background: #38bdf8;
+        padding: 8px 18px;
+        background: #ef4444;
         border: none;
         border-radius: 6px;
         font-weight: bold;
+        font-size: 13px;
         cursor: pointer;
+        color: #fff;
     }
 
     button:hover {
-        background: #0ea5e9;
+        background: #dc2626;
     }
 
     .status {
-        margin-top: 12px;
-        font-size: 13px;
+        margin-top: 5px;
+        font-size: 12px;
     }
 
+    /* IFRAME DIPERKECIL LAGI */
     .iframe-wrapper {
-        margin-top: 20px;
-        border: 3px solid #ef4444;
+        margin-top: 10px;
+        border: 2px solid #ef4444;
         border-radius: 8px;
         overflow: hidden;
         background: #000;
-        height: 420px;
+        height: 300px;
     }
 
     iframe {
@@ -82,39 +103,36 @@
     }
 
     .mitigation {
-        margin-top: 20px;
-        padding: 15px;
+        margin-top: 12px;
+        padding: 10px;
         background: #020617;
         border-left: 4px solid #22c55e;
-        font-size: 13px;
+        font-size: 12px;
         color: #d1fae5;
     }
 
     .mitigation code {
         display: block;
         background: #000;
-        padding: 8px;
+        padding: 6px;
         border-radius: 6px;
-        margin-top: 8px;
+        margin-top: 5px;
         color: #86efac;
-        font-size: 12px;
+        font-size: 11px;
         white-space: pre-wrap;
     }
 
-    .footer {
-        margin-top: 15px;
+    .references {
+        margin-top: 6px;
         font-size: 11px;
-        color: #94a3b8;
+        color: #93c5fd;
     }
 
-    .tag {
-        display: inline-block;
-        padding: 3px 9px;
-        border-radius: 20px;
-        background: #ef4444;
-        color: #fff;
-        font-size: 11px;
-        margin-left: 10px;
+    .footer {
+        margin-top: 8px;
+        font-size: 10px;
+        color: #64748b;
+        text-align: center;
     }
 </style>
 </head>
@@ -122,16 +140,20 @@
 <body>
 
 <div class="container">
-    <h1>
-        Clickjacking Testing Tool
-        <span class="tag">Pentest</span>
-    </h1>
+
+    <!-- LOGO -->
+    <div class="logo">
+        <img src="logo-bssa.png" alt="BSSA Logo">
+    </div>
+
+    <h1>Clickjacking Testing Tool</h1>
+    <div class="subtitle">Red Team Assessment – BSSA</div>
 
     <p>
-        Clickjacking Testing Tool digunakan untuk menguji apakah suatu website dapat dimuat
-        di dalam elemen <code>&lt;iframe&gt;</code>.
-        Jika halaman target berhasil ditampilkan, maka website tersebut
-        <b style="color:#ef4444;">berpotensi rentan terhadap serangan Clickjacking</b>.
+        Pengujian ini bertujuan untuk mengidentifikasi apakah halaman web dapat dimuat
+        di dalam <code>&lt;iframe&gt;</code>.  
+        Jika halaman berhasil ditampilkan, maka target
+        <b style="color:#ef4444;">berpotensi rentan terhadap Clickjacking</b>.
     </p>
 
     <div class="input-group">
@@ -146,23 +168,24 @@
     </div>
 
     <div class="mitigation">
-        <strong>Rekomendasi Mitigasi:</strong><br>
-        Terapkan HTTP Response Header untuk mencegah halaman dimuat di dalam iframe
-        dari domain yang tidak sah.
+        <strong>Mitigasi:</strong><br>
+        Batasi pemuatan halaman ke dalam iframe menggunakan HTTP Security Header.
         <code>
 X-Frame-Options: DENY
 X-Frame-Options: SAMEORIGIN
-
 Content-Security-Policy: frame-ancestors 'none';
         </code>
-        <strong>Referensi:</strong><br>
-        OWASP Clickjacking Defense Cheat Sheet<br>
-        RFC 7034 – X-Frame-Options
+        <strong>Referensi:</strong>
+        <div class="references">
+            https://cheatsheetseries.owasp.org/cheatsheets/Clickjacking_Defense_Cheat_Sheet.html<br>
+            https://www.rfc-editor.org/rfc/rfc7034
+        </div>
     </div>
 
     <div class="footer">
-        ⚠️ Digunakan hanya untuk keperluan pengujian keamanan yang sah dan berizin.
+        ⚠️ Authorized Security Testing Only – Red Team BSSA
     </div>
+
 </div>
 
 <script>
@@ -178,8 +201,8 @@ Content-Security-Policy: frame-ancestors 'none';
 
         frame.src = url;
         status.innerHTML = `
-            <strong>Target Pengujian:</strong> ${url}<br>
-            Bukti pengujian: Halaman berhasil dimuat di dalam iframe.
+            <strong>Target:</strong> ${url}<br>
+            <span style="color:#ef4444;">Iframe berhasil dimuat (indikasi Clickjacking)</span>
         `;
     }
 </script>
