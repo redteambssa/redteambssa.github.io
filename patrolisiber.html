@@ -9,138 +9,206 @@
 * { box-sizing: border-box; }
 
 html, body {
-    margin: 0;
-    height: 100%;
-    font-family: "Segoe UI", Arial, sans-serif;
-    background: #000;
-    color: #e5e7eb;
-    overflow: hidden;
+  margin: 0;
+  height: 100%;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  background: #000;
+  color: #e5e7eb;
 }
 
 .app {
-    height: 100vh;
-    max-width: 1200px;
-    margin: auto;
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
+  height: 100vh;
+  max-width: 1440px;
+  margin: auto;
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
-/* ================= HEADER ================= */
+/* HEADER */
 .header {
-    text-align: center;
-    margin-bottom: 6px;
+  text-align: center;
+  border-bottom: 1px solid #fff;
+  padding-bottom: 10px;
 }
+.header img { height: 26px; }
 .header h1 {
-    margin: 4px 0;
-    font-size: 24px;
-    color: #ef4444;
+  margin: 6px 0 0;
+  font-size: 22px;
+  color: #ef4444;
 }
-.subtitle {
-    font-size: 13px;
-    color: #cbd5f5; /* ⬅️ warna disamakan */
+.subtitle, .desc { font-size: 13px; color: #fff; }
+
+/* TOPBAR */
+.topbar {
+  display: grid;
+  grid-template-columns: 1fr 2fr auto auto;
+  gap: 10px;
 }
-.desc {
-    font-size: 13px;
-    color: #cbd5f5;
+.topbar input {
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid #fff;
+  background: #0b0b0b;
+  color: #fff;
+}
+.topbar button {
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.reset {
+  background: #000;
+  border: 1px solid #fff;
+  color: #fff;
+}
+.search {
+  background: #ef4444;
+  border: none;
+  color: #fff;
 }
 
-/* ================= INPUT ================= */
-.inputs {
-    display: grid;
-    grid-template-columns: 1fr 1fr auto;
-    gap: 8px;
-    margin: 12px 0;
-}
-.inputs input {
-    padding: 9px;
-    border-radius: 6px;
-    border: none;
-}
-.inputs button {
-    padding: 9px 16px;
-    border-radius: 6px;
-    border: none;
-    background: #ef4444;
-    color: #fff;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-/* ================= MAIN ================= */
+/* MAIN */
 .main {
-    flex: 1;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 14px;
+  min-height: 0;
 }
 
-/* ================= LIST ================= */
+/* LEFT PANEL */
 .list {
-    background: #020617;
-    border: 2px solid #ef4444;
-    border-radius: 8px;
-    padding: 8px;
-    overflow: auto;
+  background: #0b0b0b;
+  border: 1px solid #fff;
+  border-radius: 14px;
+  padding: 14px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #ef4444 transparent;
 }
-.group h3 {
-    font-size: 13px;
-    color: #fca5a5;
-    margin-bottom: 4px;
-}
-.item {
-    font-size: 13px;
-    margin-bottom: 4px;
+.list::-webkit-scrollbar { width: 6px; }
+.list::-webkit-scrollbar-thumb {
+  background: #ef4444;
+  border-radius: 6px;
 }
 
-/* ================= PREVIEW ================= */
+/* GROUP */
+.group { margin-bottom: 16px; }
+.group-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.group-title {
+  font-size: 12px;
+  color: #ef4444;
+  text-transform: uppercase;
+}
+.select-all {
+  font-size: 12px;
+  color: #ef4444;
+}
+
+/* GRID 3 KOLOM */
+.group-items {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+/* ITEM */
+.item {
+  border: 1px solid #333;
+  border-left: 4px solid #ef4444;
+  border-radius: 10px;
+  padding: 6px 8px;
+  font-size: 12px;
+  background: #0b0b0b;
+}
+.item label {
+  display: flex;
+  gap: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* RIGHT PANEL */
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+
+/* QUERY PREVIEW */
 .preview {
-    background: #020617;
-    border: 2px solid #22c55e;
-    border-radius: 8px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
+  flex: 1;
+  background: #0b0b0b;
+  border: 1px solid #fff;
+  border-radius: 14px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
 }
 .preview h3 {
-    font-size: 14px;
-    color: #86efac;
-}
-.q {
-    margin-top: 8px;
-    background: #000;
-    border-left: 4px solid #22c55e;
-    padding: 8px;
-    font-size: 13px;
-    word-break: break-all;
+  font-size: 12px;
+  color: #ef4444;
+  margin-bottom: 8px;
 }
 
-/* ================= ACTION ================= */
-.actions {
-    margin-top: 8px;
-    display: flex;
-    gap: 8px;
-}
-.actions button {
-    flex: 1;
-    padding: 10px;
-    border-radius: 6px;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-}
-.search { background: #ef4444; color: #fff; }
-.reset {
-    background: #020617;
-    border: 1px solid #334155;
-    color: #cbd5e1;
+/* preview-box default untuk query */
+.preview-box {
+  flex: 1;
+  border: 1px dashed #fff;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-y: auto;
 }
 
-/* ================= RESPONSIVE ================= */
-@media (max-width: 900px) {
-    .inputs, .main {
-        grid-template-columns: 1fr;
-    }
+/* ALERT SELALU DI TENGAH */
+.preview-box.alert {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fca5a5;
+  font-style: italic;
+}
+
+/* REFERENSI */
+.ref {
+  background: #0b0b0b;
+  border: 1px solid #fff;
+  border-radius: 14px;
+  padding: 12px;
+}
+.ref h3 {
+  font-size: 12px;
+  color: #ef4444;
+  margin-bottom: 6px;
+}
+.ref a {
+  display: block;
+  font-size: 12px;
+  color: #93c5fd;
+  text-decoration: none;
+  margin-bottom: 4px;
+}
+.ref a:hover { text-decoration: underline; }
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .main { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -148,92 +216,170 @@ html, body {
 <body>
 <div class="app">
 
-    <div class="header">
-        <h1>Patroli Siber</h1>
-        <div class="subtitle">Red Team Assessment – BSSA</div>
-        <div class="desc">
-            Deep detection indikasi Deface, Judol, dan Malware menggunakan Google Dorking.
-        </div>
+<div class="header">
+  <img src="./logo-bssa.jpg" alt="BSSA Logo">
+  <h1>Patroli Siber</h1>
+  <div class="subtitle">Red Team Assessment - BSSA</div>
+  <div class="desc">Deteksi indikasi Deface, Judi Online, Malware, dan Backdoor menggunakan Metode Google Dorking</div>
+</div>
+
+<div class="topbar">
+  <input id="domain" placeholder="Target Domain (target.com)">
+  <input id="customDork" placeholder="Custom Dorking Payload (Optional)">
+  <button class="reset" onclick="resetAll()">Reset</button>
+  <button class="search" onclick="search()">Search</button>
+</div>
+
+<div class="main">
+  <div class="list" id="dorkList"></div>
+
+  <div class="right">
+    <div class="preview">
+      <h3>Payload Google Dorking Preview</h3>
+      <div id="previewQuery" class="preview-box alert">
+        ❗ Isi target domain dan pilihan terlebih dahulu
+      </div>
     </div>
 
-    <div class="inputs">
-        <input id="domain" placeholder="contoh: jakarta.go.id">
-        <input id="customDork" placeholder="Custom dork (opsional)">
-        <button onclick="updatePreview()">Preview</button>
+    <div class="ref">
+      <h3>Referensi Payload Google Dorking</h3>
+      <a href="https://www.exploit-db.com/google-hacking-database" target="_blank" rel="noopener noreferrer">
+        https://www.exploit-db.com/google-hacking-database
+      </a>
+      <a href="https://owasp.org/www-community/attacks/Google_Hacking" target="_blank" rel="noopener noreferrer">
+        https://owasp.org/www-community/attacks/Google_Hacking
+      </a>
     </div>
-
-    <div class="main">
-        <div class="list" id="dorkList"></div>
-
-        <div class="preview">
-            <h3>Query Output</h3>
-            <div id="previewQuery" class="q">Belum ada query</div>
-        </div>
-    </div>
-
-    <div class="actions">
-        <button class="search" onclick="search()">Google</button>
-        <button class="reset" onclick="resetAll()">Reset</button>
-    </div>
+  </div>
+</div>
 
 </div>
 
 <script>
-const dorks = [
-    'intitle:"Defaced by"',
-    'intitle:"Hacked by"',
-    'intitle:"Owned by"'
-];
+const dorks = {
+  "Deface Indicators": [
+    'intitle:"Defaced by"', 'intitle:"Hacked by"', 'intitle:"Owned by"',
+    'intext:"Hacked By"', 'intext:"Site Defaced"', 'intext:"Was Here"',
+    'intitle:"Deface Page"', 'intext:"H4cked"', 'intext:"Defaced"'
+  ],
+  "Judi Online": [
+    'intext:"slot"', 'intext:"judol"', 'intext:"casino online"',
+    'intext:"judi online"', 'intext:"togel"', 'intext:"bet"',
+    'intext:"slot gacor"', 'intext:"maxwin"', 'intext:"live casino"'
+  ],
+  "Malware dan Backdoor": [
+    'inurl:shell.php', 'inurl:c99.php', 'inurl:r57.php',
+    'inurl:cmd.php', 'inurl:upload.php', 'inurl:backdoor.php',
+    'intext:"eval(base64_decode"', 'intext:"system($_GET"',
+    'intext:"passthru("'
+  ]
+};
 
 const list = document.getElementById("dorkList");
-const previewQuery = document.getElementById("previewQuery");
+const preview = document.getElementById("previewQuery");
+const domain = document.getElementById("domain");
+const customDork = document.getElementById("customDork");
 
-dorks.forEach(d => {
-    const div = document.createElement("div");
-    div.className = "item";
-    div.innerHTML = `
+/* Render groups */
+for (const group in dorks) {
+  const g = document.createElement("div");
+  g.className = "group";
+  g.innerHTML = `
+    <div class="group-head">
+      <div class="group-title">${group}</div>
+      <label class="select-all">
+        <input type="checkbox" class="selectAll"> Pilih Semua
+      </label>
+    </div>
+    <div class="group-items"></div>
+  `;
+
+  const container = g.querySelector(".group-items");
+
+  dorks[group].forEach(d => {
+    container.innerHTML += `
+      <div class="item">
         <label>
-            <input type="checkbox" class="chk" data-dork='${d}'> ${d}
+          <input type="checkbox" class="chk" data-dork='${d}'> ${d}
         </label>
-    `;
-    list.appendChild(div);
-});
+      </div>`;
+  });
 
-function buildQuery() {
-    const domain = document.getElementById("domain").value.trim();
-    if (!domain) return "";
+  g.querySelector(".selectAll").addEventListener("change", e => {
+    container.querySelectorAll(".chk").forEach(c => c.checked = e.target.checked);
+    updatePreview();
+  });
 
-    const selected = [];
-    document.querySelectorAll(".chk:checked").forEach(cb =>
-        selected.push(cb.dataset.dork)
-    );
-
-    if (selected.length === 0) return "";
-
-    return `site:${domain} (${selected.join(" OR ")})`;
+  list.appendChild(g);
 }
 
+function buildQuery(target, selected, custom) {
+  const parts = [];
+  if (selected.length) parts.push(selected.join(" OR "));
+  if (custom) parts.push(custom);
+  return `site:${target} ` + parts.join(" OR ");
+}
+
+/* ===== LOGIC PREVIEW (SESUAI REQUEST) ===== */
 function updatePreview() {
-    const q = buildQuery();
-    previewQuery.textContent = q || "Masukkan domain & pilih dork";
+  const target = domain.value.trim();
+  const selected = [...document.querySelectorAll(".chk:checked")].map(c => c.dataset.dork);
+  const custom = customDork.value.trim();
+
+  const hasDomain = !!target;
+  const hasAnyDork = selected.length > 0 || !!custom;
+
+  // 1) kosong semua
+  if (!hasDomain && !hasAnyDork) {
+    preview.classList.add("alert");
+    preview.textContent = "❗ Isi target domain dan pilihan terlebih dahulu";
+    return;
+  }
+
+  // 2) domain kosong, tapi pilihan ada
+  if (!hasDomain && hasAnyDork) {
+    preview.classList.add("alert");
+    preview.textContent = "❗ Isi target domain terlebih dahulu";
+    return;
+  }
+
+  // 3) domain ada, tapi pilihan kosong
+  if (hasDomain && !hasAnyDork) {
+    preview.classList.add("alert");
+    preview.textContent = "❗ Pilih minimal satu indikator";
+    return;
+  }
+
+  // 4) valid
+  preview.classList.remove("alert");
+  preview.textContent = buildQuery(target, selected, custom);
 }
 
 function search() {
-    const q = buildQuery();
-    if (!q) return alert("Query belum lengkap");
-    window.open(
-        "https://www.google.com/search?q=" + encodeURIComponent(q),
-        "_blank"
-    );
+  updatePreview();
+  if (preview.classList.contains("alert")) {
+    alert(preview.textContent.replace("❗ ", ""));
+    return;
+  }
+  window.open("https://www.google.com/search?q=" + encodeURIComponent(preview.textContent), "_blank");
 }
 
 function resetAll() {
-    document.getElementById("domain").value = "";
-    document.querySelectorAll(".chk").forEach(c => c.checked = false);
-    previewQuery.textContent = "Reset selesai";
+  domain.value = "";
+  customDork.value = "";
+  document.querySelectorAll("input[type=checkbox]").forEach(c => c.checked = false);
+  updatePreview();
 }
 
-document.addEventListener("change", updatePreview);
+/* EVENTS */
+document.addEventListener("change", e => {
+  if (e.target.classList.contains("chk") || e.target.classList.contains("selectAll")) updatePreview();
+});
+domain.addEventListener("input", updatePreview);
+customDork.addEventListener("input", updatePreview);
+
+/* init */
+updatePreview();
 </script>
 
 </body>
