@@ -88,34 +88,53 @@ html, body {
   border-radius: 14px;
   padding: 14px;
   overflow-y: auto;
+
+  /* SCROLLBAR FIREFOX */
   scrollbar-width: thin;
   scrollbar-color: #ef4444 transparent;
 }
-.list::-webkit-scrollbar { width: 6px; }
+
+/* SCROLLBAR CHROME / EDGE / SAFARI */
+.list::-webkit-scrollbar {
+  width: 5px;                /* DIPERKECIL */
+}
+.list::-webkit-scrollbar-track {
+  background: transparent;
+}
 .list::-webkit-scrollbar-thumb {
-  background: #ef4444;
+  background: #ef4444;       /* MERAH */
   border-radius: 6px;
 }
 
 /* GROUP */
 .group { margin-bottom: 16px; }
+
 .group-head {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 12px;                 /* JARAK JUDUL & PILIH SEMUA */
   margin-bottom: 8px;
 }
+
 .group-title {
   font-size: 12px;
   color: #ef4444;
   text-transform: uppercase;
-}
-.select-all {
-  font-size: 12px;
-  color: #ef4444;
+  white-space: nowrap;
 }
 
-/* GRID 3 KOLOM */
+/* PILIH SEMUA – DEKAT JUDUL */
+.select-all {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #fff;
+  user-select: none;
+}
+
+/* GRID 3x3 */
 .group-items {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -131,12 +150,31 @@ html, body {
   font-size: 12px;
   background: #0b0b0b;
 }
-.item label {
+
+/* ===== CIRCLE CHECKBOX (ITEM + PILIH SEMUA) ===== */
+.chk-circle {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #ef4444;
+  background: transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.chk-circle:checked {
+  background: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239,68,68,.25);
+}
+
+.item label,
+.select-all {
   display: flex;
+  align-items: center;
   gap: 8px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  cursor: pointer;
 }
 
 /* RIGHT PANEL */
@@ -144,10 +182,9 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  min-height: 0;
 }
 
-/* QUERY PREVIEW */
+/* PREVIEW */
 .preview {
   flex: 1;
   background: #0b0b0b;
@@ -162,8 +199,6 @@ html, body {
   color: #ef4444;
   margin-bottom: 8px;
 }
-
-/* preview-box default untuk query */
 .preview-box {
   flex: 1;
   border: 1px dashed #fff;
@@ -171,16 +206,12 @@ html, body {
   padding: 10px;
   font-size: 12px;
   white-space: pre-wrap;
-  word-break: break-word;
   overflow-y: auto;
 }
-
-/* ALERT SELALU DI TENGAH */
 .preview-box.alert {
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
   color: #fca5a5;
   font-style: italic;
 }
@@ -202,11 +233,9 @@ html, body {
   font-size: 12px;
   color: #93c5fd;
   text-decoration: none;
-  margin-bottom: 4px;
 }
 .ref a:hover { text-decoration: underline; }
 
-/* RESPONSIVE */
 @media (max-width: 1100px) {
   .main { grid-template-columns: 1fr; }
 }
@@ -220,7 +249,9 @@ html, body {
   <img src="./logo-bssa.jpg" alt="BSSA Logo">
   <h1>Patroli Siber</h1>
   <div class="subtitle">Red Team Assessment - BSSA</div>
-  <div class="desc">Deteksi indikasi Deface, Judi Online, Malware & Backdoor menggunakan Metode Google Dorking</div>
+  <div class="desc">
+    Deteksi indikasi Deface, Judi Online, Malware, dan Backdoor menggunakan Metode Google Dorking
+  </div>
 </div>
 
 <div class="topbar">
@@ -243,12 +274,8 @@ html, body {
 
     <div class="ref">
       <h3>Referensi Payload Google Dorking</h3>
-      <a href="https://www.exploit-db.com/google-hacking-database" target="_blank" rel="noopener noreferrer">
-        https://www.exploit-db.com/google-hacking-database
-      </a>
-      <a href="https://owasp.org/www-community/attacks/Google_Hacking" target="_blank" rel="noopener noreferrer">
-        https://owasp.org/www-community/attacks/Google_Hacking
-      </a>
+      <a href="https://www.exploit-db.com/google-hacking-database" target="_blank">Exploit DB</a>
+      <a href="https://owasp.org/www-community/attacks/Google_Hacking" target="_blank">OWASP</a>
     </div>
   </div>
 </div>
@@ -262,12 +289,12 @@ const dorks = {
     'intext:"Hacked By"', 'intext:"Site Defaced"', 'intext:"Was Here"',
     'intitle:"Deface Page"', 'intext:"H4cked"', 'intext:"Defaced"'
   ],
-  "Judi Online indicators": [
+  "Judi Online Indicators": [
     'intext:"slot"', 'intext:"judol"', 'intext:"casino online"',
     'intext:"judi online"', 'intext:"togel"', 'intext:"bet"',
     'intext:"slot gacor"', 'intext:"maxwin"', 'intext:"live casino"'
   ],
-  "Malware & Backdoor indicators": [
+  "Malware dan Backdoor Indicators": [
     'inurl:shell.php', 'inurl:c99.php', 'inurl:r57.php',
     'inurl:cmd.php', 'inurl:upload.php', 'inurl:backdoor.php',
     'intext:"eval(base64_decode"', 'intext:"system($_GET"',
@@ -280,7 +307,6 @@ const preview = document.getElementById("previewQuery");
 const domain = document.getElementById("domain");
 const customDork = document.getElementById("customDork");
 
-/* Render groups */
 for (const group in dorks) {
   const g = document.createElement("div");
   g.className = "group";
@@ -288,7 +314,8 @@ for (const group in dorks) {
     <div class="group-head">
       <div class="group-title">${group}</div>
       <label class="select-all">
-        <input type="checkbox" class="selectAll"> Pilih Semua
+        <input type="checkbox" class="chk-circle selectAll">
+        Pilih Semua
       </label>
     </div>
     <div class="group-items"></div>
@@ -300,7 +327,8 @@ for (const group in dorks) {
     container.innerHTML += `
       <div class="item">
         <label>
-          <input type="checkbox" class="chk" data-dork='${d}'> ${d}
+          <input type="checkbox" class="chk chk-circle" data-dork='${d}'>
+          ${d}
         </label>
       </div>`;
   });
@@ -320,34 +348,28 @@ function buildQuery(target, selected, custom) {
   return `site:${target} ` + parts.join(" OR ");
 }
 
-/* ===== LOGIC PREVIEW ===== */
 function updatePreview() {
   const target = domain.value.trim();
   const selected = [...document.querySelectorAll(".chk:checked")].map(c => c.dataset.dork);
   const custom = customDork.value.trim();
 
-  const hasDomain = !!target;
-  const hasAnyDork = selected.length > 0 || !!custom;
-
-  if (!hasDomain && !hasAnyDork) {
-    preview.classList.add("alert");
+  if (!target && !selected.length && !custom) {
+    preview.className = "preview-box alert";
     preview.textContent = "❗ Isi target domain dan pilihan terlebih dahulu";
     return;
   }
-
-  if (!hasDomain && hasAnyDork) {
-    preview.classList.add("alert");
+  if (!target) {
+    preview.className = "preview-box alert";
     preview.textContent = "❗ Isi target domain terlebih dahulu";
     return;
   }
-
-  if (hasDomain && !hasAnyDork) {
-    preview.classList.add("alert");
-    preview.textContent = "❗ Pilih minimal satu indicators";
+  if (!selected.length && !custom) {
+    preview.className = "preview-box alert";
+    preview.textContent = "❗ Pilih minimal satu indikator";
     return;
   }
 
-  preview.classList.remove("alert");
+  preview.className = "preview-box";
   preview.textContent = buildQuery(target, selected, custom);
 }
 
@@ -357,7 +379,7 @@ function search() {
     alert(preview.textContent.replace("❗ ", ""));
     return;
   }
-  window.open("https://www.google.com/search?q=" + encodeURIComponent(preview.textContent), "_blank");
+  window.open("https://www.google.com/search?q=" + encodeURIComponent(preview.textContent));
 }
 
 function resetAll() {
@@ -368,12 +390,11 @@ function resetAll() {
 }
 
 document.addEventListener("change", e => {
-  if (e.target.classList.contains("chk") || e.target.classList.contains("selectAll")) updatePreview();
+  if (e.target.matches(".chk,.selectAll")) updatePreview();
 });
 domain.addEventListener("input", updatePreview);
 customDork.addEventListener("input", updatePreview);
 
-/* init */
 updatePreview();
 </script>
 
