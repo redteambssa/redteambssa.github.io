@@ -15,11 +15,12 @@ body {
     color: #e5e7eb;
 }
 
+/* CONTAINER */
 .container {
-    min-height: 100vh;
+    height: 100vh;
     max-width: 1200px;
     margin: auto;
-    padding: 14px;
+    padding: 14px 18px;
     display: flex;
     flex-direction: column;
 }
@@ -28,44 +29,40 @@ body {
 .header {
     text-align: center;
 }
-
 .header img {
     max-height: 60px;
+    margin-bottom: 4px;
 }
-
 h1 {
-    margin: 6px 0 2px;
+    margin: 4px 0 2px;
     font-size: 22px;
     color: #ef4444;
 }
-
 .subtitle {
     font-size: 12px;
     color: #94a3b8;
 }
-
 .desc {
     font-size: 12px;
     margin-top: 6px;
+    line-height: 1.4;
 }
 
 /* INPUT */
 .input-group {
     display: flex;
     gap: 6px;
-    margin: 10px 0;
+    margin: 8px 0;
 }
-
 input {
     flex: 1;
-    padding: 8px;
+    padding: 7px;
     border-radius: 6px;
     border: none;
     font-size: 12px;
 }
-
 button {
-    padding: 8px 16px;
+    padding: 7px 16px;
     border: none;
     border-radius: 6px;
     background: #ef4444;
@@ -75,29 +72,10 @@ button {
     cursor: pointer;
 }
 
-/* STATUS + BADGE */
+/* STATUS */
 .status {
     font-size: 11px;
-    margin-bottom: 6px;
-}
-
-.badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 11px;
-    font-weight: bold;
-    margin-left: 6px;
-}
-
-.badge.vulnerable {
-    background: #dc2626;
-    color: #fff;
-}
-
-.badge.safe {
-    background: #16a34a;
-    color: #fff;
+    margin-bottom: 4px;
 }
 
 /* IFRAME */
@@ -108,8 +86,8 @@ button {
     border-radius: 8px;
     overflow: hidden;
     background: #111;
+    margin-bottom: 6px;
 }
-
 iframe {
     width: 100%;
     height: 100%;
@@ -123,7 +101,7 @@ iframe {
     position: absolute;
     inset: 0;
     background: #111;
-    color: #86efac;
+    color: #22c55e;
     font-size: 13px;
     display: flex;
     align-items: center;
@@ -134,27 +112,26 @@ iframe {
 
 /* MITIGATION */
 .mitigation {
-    margin-top: 8px;
     font-size: 11px;
-    padding: 6px;
+    padding: 6px 10px;
     border-left: 4px solid #22c55e;
     background: #020617;
+    line-height: 1.4;
 }
-
 .mitigation code {
     display: block;
     background: #000;
-    padding: 4px;
+    padding: 5px;
     border-radius: 6px;
     margin-top: 4px;
     font-size: 10px;
     color: #86efac;
 }
-
 .references {
     font-size: 10px;
     color: #93c5fd;
     margin-top: 2px;
+    word-break: break-all;
 }
 
 /* MOBILE */
@@ -170,16 +147,18 @@ iframe {
 
 <div class="container">
 
+    <!-- HEADER -->
     <div class="header">
         <img src="./logo-bssa.jpg" alt="BSSA Logo">
         <h1>Clickjacking Testing Tool</h1>
         <div class="subtitle">Red Team Assessment – BSSA</div>
         <div class="desc">
-            Pengujian untuk memastikan apakah halaman web dapat dimuat di dalam
-            <code>&lt;iframe&gt;</code>.
+            Pengujian untuk memastikan apakah halaman web dapat dimuat
+            di dalam <code>&lt;iframe&gt;</code>.
         </div>
     </div>
 
+    <!-- INPUT -->
     <div class="input-group">
         <input type="text" id="targetUrl" placeholder="https://target-website.com">
         <button onclick="testClickjacking()">Uji</button>
@@ -187,20 +166,23 @@ iframe {
 
     <div class="status" id="status"></div>
 
+    <!-- IFRAME -->
     <div class="iframe-wrapper">
         <iframe id="testFrame"></iframe>
         <div id="iframeOverlay">
             Iframe diblokir oleh target.<br>
-            <b>NOT VULNERABLE</b>
+            Target <b>tidak rentan terhadap Clickjacking</b>.
         </div>
     </div>
 
+    <!-- MITIGATION -->
     <div class="mitigation">
         <strong>Mitigasi:</strong>
+        Batasi pemuatan halaman ke dalam iframe menggunakan HTTP Security Header.
         <code>
 X-Frame-Options: DENY
 X-Frame-Options: SAMEORIGIN
-CSP: frame-ancestors 'none';
+Content-Security-Policy: frame-ancestors 'none';
         </code>
         <div class="references">
             https://cheatsheetseries.owasp.org/cheatsheets/Clickjacking_Defense_Cheat_Sheet.html<br>
@@ -227,7 +209,7 @@ function testClickjacking() {
 
     status.innerHTML =
         "<strong>Target:</strong> " + url +
-        "<span class='badge vulnerable'>VULNERABLE</span>";
+        " — <span style='color:#fbbf24;'>pengujian iframe</span>";
 
     setTimeout(() => {
         try {
@@ -236,13 +218,13 @@ function testClickjacking() {
                 overlay.style.display = "flex";
                 status.innerHTML =
                     "<strong>Target:</strong> " + url +
-                    "<span class='badge safe'>NOT VULNERABLE</span>";
+                    " — <span style='color:#22c55e;'>iframe diblok (protected)</span>";
             }
         } catch (e) {
             overlay.style.display = "flex";
             status.innerHTML =
                 "<strong>Target:</strong> " + url +
-                "<span class='badge safe'>NOT VULNERABLE</span>";
+                " — <span style='color:#22c55e;'>iframe diblok (protected)</span>";
         }
     }, 1500);
 }
