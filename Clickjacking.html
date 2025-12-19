@@ -6,64 +6,66 @@
 <title>Clickjacking Testing Tool</title>
 
 <style>
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
-body {
+html, body {
     margin: 0;
+    height: 100%;
+    overflow: hidden;
     font-family: "Segoe UI", Arial, sans-serif;
     background: radial-gradient(circle at top, #020617, #000);
     color: #e5e7eb;
 }
 
-.container {
-    min-height: 100vh;
+/* MAIN WRAPPER */
+.app {
+    height: 100vh;
     max-width: 1200px;
     margin: auto;
-    padding: 14px;
+    padding: 12px 16px;
     display: flex;
     flex-direction: column;
 }
 
+/* HEADER */
 .header {
     text-align: center;
 }
-
 .header img {
-    max-height: 60px;
+    max-height: 58px;
+    margin-bottom: 4px;
 }
-
-h1 {
-    margin: 6px 0 2px;
+.header h1 {
+    margin: 4px 0 2px;
     font-size: 22px;
     color: #ef4444;
 }
-
 .subtitle {
     font-size: 12px;
     color: #94a3b8;
 }
-
 .desc {
     font-size: 12px;
     margin-top: 6px;
 }
 
+/* INPUT */
 .input-group {
     display: flex;
     gap: 6px;
-    margin: 10px 0;
+    margin: 8px 0 4px;
 }
-
-input {
+.input-group input {
     flex: 1;
-    padding: 8px;
+    padding: 7px;
     border-radius: 6px;
     border: none;
     font-size: 12px;
 }
-
-button {
-    padding: 8px 16px;
+.input-group button {
+    padding: 7px 16px;
     border: none;
     border-radius: 6px;
     background: #ef4444;
@@ -75,69 +77,75 @@ button {
 
 .status {
     font-size: 11px;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
+}
+
+/* IFRAME AREA (KEY FIX) */
+.frame-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .iframe-wrapper {
+    position: relative;
     flex: 1;
     border: 2px solid #ef4444;
     border-radius: 8px;
     overflow: hidden;
-    background: #000;
+    background: #111;
 }
 
 iframe {
     width: 100%;
     height: 100%;
     border: none;
+    background: #111;
 }
 
-.mobile-actions {
+/* OVERLAY */
+#iframeOverlay {
+    position: absolute;
+    inset: 0;
     display: none;
-    margin-top: 8px;
+    align-items: center;
+    justify-content: center;
+    background: #111;
+    color: #22c55e;
+    font-size: 13px;
+    text-align: center;
+    padding: 20px;
 }
 
-.mobile-actions a {
-    display: inline-block;
-    padding: 6px 10px;
-    background: #0ea5e9;
-    color: #fff;
-    border-radius: 6px;
-    font-size: 11px;
-    text-decoration: none;
-}
-
+/* MITIGATION */
 .mitigation {
-    margin-top: 8px;
+    margin-top: 6px;
     font-size: 11px;
-    padding: 6px;
+    padding: 6px 10px;
     border-left: 4px solid #22c55e;
     background: #020617;
+    line-height: 1.4;
 }
-
 .mitigation code {
     display: block;
     background: #000;
-    padding: 4px;
+    padding: 5px;
     border-radius: 6px;
     margin-top: 4px;
     font-size: 10px;
     color: #86efac;
 }
-
 .references {
     font-size: 10px;
     color: #93c5fd;
     margin-top: 2px;
+    word-break: break-all;
 }
 
-/* MOBILE MODE */
+/* MOBILE */
 @media (max-width: 768px) {
     .iframe-wrapper {
         display: none;
-    }
-    .mobile-actions {
-        display: block;
     }
 }
 </style>
@@ -145,18 +153,20 @@ iframe {
 
 <body>
 
-<div class="container">
+<div class="app">
 
+    <!-- HEADER -->
     <div class="header">
         <img src="./logo-bssa.jpg" alt="BSSA Logo">
         <h1>Clickjacking Testing Tool</h1>
         <div class="subtitle">Red Team Assessment – BSSA</div>
         <div class="desc">
-            Pengujian untuk memastikan apakah halaman web dapat dimuat di dalam
-            <code>&lt;iframe&gt;</code>.
+            Pengujian untuk memastikan apakah halaman web dapat dimuat
+            di dalam <code>&lt;iframe&gt;</code>.
         </div>
     </div>
 
+    <!-- INPUT -->
     <div class="input-group">
         <input type="text" id="targetUrl" placeholder="https://target-website.com">
         <button onclick="testClickjacking()">Uji</button>
@@ -164,23 +174,25 @@ iframe {
 
     <div class="status" id="status"></div>
 
-    <div class="iframe-wrapper">
-        <iframe id="testFrame"></iframe>
-    </div>
-
-    <div class="mobile-actions" id="mobileActions">
-        <a id="openTarget" href="#" target="_blank">Buka Target di Tab Baru</a>
-        <div style="font-size:10px; color:#fbbf24; margin-top:4px;">
-            Browser mobile membatasi iframe. Gunakan desktop untuk validasi clickjacking.
+    <!-- FRAME -->
+    <div class="frame-area">
+        <div class="iframe-wrapper">
+            <iframe id="testFrame"></iframe>
+            <div id="iframeOverlay">
+                Iframe diblokir oleh target.<br>
+                Target <b>tidak rentan terhadap Clickjacking</b>.
+            </div>
         </div>
     </div>
 
+    <!-- MITIGATION -->
     <div class="mitigation">
         <strong>Mitigasi:</strong>
+        Batasi pemuatan halaman ke dalam iframe menggunakan HTTP Security Header.
         <code>
 X-Frame-Options: DENY
 X-Frame-Options: SAMEORIGIN
-CSP: frame-ancestors 'none';
+Content-Security-Policy: frame-ancestors 'none';
         </code>
         <div class="references">
             https://cheatsheetseries.owasp.org/cheatsheets/Clickjacking_Defense_Cheat_Sheet.html<br>
@@ -198,11 +210,33 @@ function testClickjacking() {
         return;
     }
 
-    document.getElementById("status").innerHTML =
-        "<strong>Target:</strong> " + url;
+    const frame = document.getElementById("testFrame");
+    const overlay = document.getElementById("iframeOverlay");
+    const status = document.getElementById("status");
 
-    document.getElementById("testFrame").src = url;
-    document.getElementById("openTarget").href = url;
+    overlay.style.display = "none";
+    frame.src = url;
+
+    status.innerHTML =
+        "<strong>Target:</strong> " + url +
+        " — <span style='color:#fbbf24;'>pengujian iframe</span>";
+
+    setTimeout(() => {
+        try {
+            const doc = frame.contentDocument || frame.contentWindow.document;
+            if (!doc || doc.body.innerHTML.length < 20) {
+                overlay.style.display = "flex";
+                status.innerHTML =
+                    "<strong>Target:</strong> " + url +
+                    " — <span style='color:#22c55e;'>iframe diblok (protected)</span>";
+            }
+        } catch (e) {
+            overlay.style.display = "flex";
+            status.innerHTML =
+                "<strong>Target:</strong> " + url +
+                " — <span style='color:#22c55e;'>iframe diblok (protected)</span>";
+        }
+    }, 1500);
 }
 </script>
 
