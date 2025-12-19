@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patroli Siber – BSSA</title>
+
+<style>
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    height: 100%;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #000;
+    color: #e5e7eb;
+}
+
+/* ================= APP ================= */
+.app {
+    min-height: 100vh;
+    max-width: 1300px;
+    margin: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ================= HEADER ================= */
+.header {
+    text-align: center;
+    margin-bottom: 14px;
+}
+.header img {
+    max-height: 56px;
+    margin-bottom: 6px;
+}
+.header h1 {
+    margin: 4px 0;
+    font-size: clamp(20px, 4vw, 28px);
+    color: #ef4444;
+}
+.subtitle {
+    font-size: 13px;
+    color: #ffffff;
+}
+.desc {
+    font-size: 13px;
+    margin-top: 6px;
+    color: #cbd5f5;
+}
+
+/* ================= INPUT ================= */
+.inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 8px;
+    margin: 12px 0 10px;
+}
+.inputs input {
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
+}
+.inputs button {
+    padding: 10px 18px;
+    border-radius: 6px;
+    border: none;
+    background: #ef4444;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* ================= HELP ================= */
+.help {
+    font-size: 13px;
+    color: #9ca3af;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+.help code {
+    background: #020617;
+    color: #86efac;
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+
+/* ================= MAIN ================= */
+.main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* ================= LIST ================= */
+.list {
+    background: #020617;
+    border: 2px solid #ef4444;
+    border-radius: 8px;
+    padding: 10px;
+    overflow-y: auto;
+}
+.group {
+    margin-bottom: 14px;
+}
+.group h3 {
+    font-size: 14px;
+    color: #fca5a5;
+    margin-bottom: 6px;
+}
+.item {
+    background: #000;
+    border-left: 4px solid #ef4444;
+    padding: 6px 8px;
+    margin-bottom: 6px;
+    font-size: 13px;
+}
+
+/* ================= PREVIEW ================= */
+.preview {
+    background: #020617;
+    border: 2px solid #22c55e;
+    border-radius: 8px;
+    padding: 10px;
+}
+.preview h3 {
+    font-size: 14px;
+    color: #86efac;
+}
+.preview .meta {
+    font-size: 13px;
+    color: #9ca3af;
+    margin-bottom: 8px;
+}
+.preview .q {
+    background: #000;
+    border-left: 4px solid #22c55e;
+    padding: 6px 8px;
+    font-size: 13px;
+    word-break: break-all;
+}
+
+/* ================= ACTIONS ================= */
+.actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+.actions button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+.actions .search {
+    background: #ef4444;
+    color: #fff;
+}
+.actions .reset {
+    background: #020617;
+    border: 1px solid #334155;
+    color: #cbd5e1;
+}
+
+/* ================= FOOTER ================= */
+.footer {
+    margin-top: 12px;
+    font-size: 13px;
+    padding: 10px 12px;
+    background: #020617;
+    border-left: 4px solid #22c55e;
+    color: #d1fae5;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px) {
+    .inputs {
+        grid-template-columns: 1fr;
+    }
+    .main {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- HEADER -->
+    <div class="header">
+        <img src="./logo-bssa.jpg" alt="BSSA Logo">
+        <h1>Patroli Siber Domain & Subdomain</h1>
+        <div class="subtitle">Red Team Assessment – BSSA</div>
+        <div class="desc">
+            Deep detection indikasi Deface, Judol, Spam SEO, Malware menggunakan Google Dorking.
+        </div>
+    </div>
+
+    <!-- INPUT -->
+    <div class="inputs">
+        <input id="domain" placeholder="Target domain / subdomain (contoh: target.com)">
+        <input id="customDork" placeholder='Custom dork tambahan (opsional)'>
+        <button onclick="search()">Cari</button>
+    </div>
+
+    <!-- HELP -->
+    <div class="help">
+        Keterangan:<br>
+        Setiap dork yang dipilih akan digabungkan menjadi satu query Google
+        untuk melakukan deteksi mendalam terhadap domain atau subdomain target.
+    </div>
+
+    <div class="main">
+
+        <!-- LEFT -->
+        <div class="list" id="dorkList"></div>
+
+        <!-- RIGHT -->
+        <div class="preview">
+            <h3>Query Preview</h3>
+            <div class="meta" id="previewMeta">Belum ada query.</div>
+            <div id="previewQuery" class="q"></div>
+        </div>
+
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions">
+        <button class="search" onclick="search()">Cari berdasarkan pilihan</button>
+        <button class="reset" onclick="resetAll()">Reset</button>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        Keterangan Operasional:<br>
+        • Seluruh dork yang dipilih digabungkan menjadi satu query menggunakan AND logic.<br>
+        • Deteksi mencakup keseluruhan domain maupun subdomain sesuai target.<br>
+        • Digunakan untuk OSINT dan monitoring keamanan, bukan scanning aktif.
+    </div>
+
+</div>
+
+<script>
+/* ================= DORK DATA ================= */
+const dorks = {
+    "Deface Indicators": [
+        'intitle:"Defaced by"',
+        'intitle:"Hacked by"',
+        'intitle:"Owned by"'
+    ],
+    "Judol / Slot": [
+        'intext:"slot"',
+        'intext:"judol"',
+        'intext:"casino online"'
+    ],
+    "Malware / Backdoor": [
+        'inurl:shell.php',
+        'inurl:cmd.php',
+        'intext:"eval(base64_decode"'
+    ]
+};
+
+const list = document.getElementById("dorkList");
+const previewQuery = document.getElementById("previewQuery");
+const previewMeta = document.getElementById("previewMeta");
+
+/* BUILD LIST */
+for (const group in dorks) {
+    const g = document.createElement("div");
+    g.className = "group";
+    g.innerHTML = `<h3>${group}</h3>`;
+    dorks[group].forEach(d => {
+        const div = document.createElement("div");
+        div.className = "item";
+        div.innerHTML = `
+            <label>
+                <input type="checkbox" class="chk" data-dork='${d}'> ${d}
+            </label>
+        `;
+        g.appendChild(div);
+    });
+    list.appendChild(g);
+}
+
+/* BUILD QUERY (AND LOGIC) */
+function buildQuery() {
+    const target = domain.value.trim();
+    if (!target) return "";
+
+    const parts = [];
+    document.querySelectorAll(".chk:checked").forEach(cb => {
+        parts.push(cb.dataset.dork);
+    });
+
+    if (customDork.value.trim()) {
+        parts.push(customDork.value.trim());
+    }
+
+    if (parts.length === 0) return "";
+
+    return `site:${target} ` + parts.join(" ");
+}
+
+/* PREVIEW */
+function updatePreview() {
+    const q = buildQuery();
+
+    if (!domain.value) {
+        previewMeta.textContent = "Masukkan domain atau subdomain target.";
+        previewQuery.textContent = "";
+        return;
+    }
+
+    if (!q) {
+        previewMeta.textContent = "Pilih minimal satu dork.";
+        previewQuery.textContent = "";
+        return;
+    }
+
+    previewMeta.textContent =
+        `Target: ${domain.value} (deteksi keseluruhan domain)`;
+
+    previewQuery.textContent = q;
+}
+
+/* SEARCH */
+function search() {
+    const q = buildQuery();
+    if (!q) {
+        alert("Target dan minimal satu dork wajib dipilih.");
+        return;
+    }
+    window.open(
+        "https://www.google.com/search?q=" + encodeURIComponent(q),
+        "_blank"
+    );
+}
+
+/* RESET */
+function resetAll() {
+    domain.value = "";
+    customDork.value = "";
+    document.querySelectorAll(".chk").forEach(c => c.checked = false);
+    previewQuery.textContent = "";
+    previewMeta.textContent = "Reset selesai.";
+}
+
+/* EVENTS */
+document.querySelectorAll(".chk").forEach(c =>
+    c.addEventListener("change", updatePreview)
+);
+domain.addEventListener("input", updatePreview);
+customDork.addEventListener("input", updatePreview);
+</script>
+
+</body>
+</html>
