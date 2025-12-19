@@ -26,26 +26,43 @@ html, body {
   gap: 14px;
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
 .header {
   text-align: center;
   border-bottom: 1px solid #fff;
-  padding-bottom: 10px;
+  padding-bottom: 14px;
 }
-.header img { height: 26px; }
+
+.header img {
+  height: 44px;              /* LOGO DIPERBESAR */
+  margin-bottom: 6px;        /* NEMPEL KE JUDUL */
+}
+
 .header h1 {
-  margin: 6px 0 0;
+  margin: 0;
   font-size: 22px;
   color: #ef4444;
 }
-.subtitle, .desc { font-size: 13px; color: #fff; }
 
-/* TOPBAR */
+.subtitle {
+  font-size: 13px;
+  color: #fff;
+  margin-top: 2px;
+}
+
+.desc {
+  font-size: 13px;
+  color: #fff;
+  margin-top: 2px;
+}
+
+/* ================= TOPBAR ================= */
 .topbar {
   display: grid;
   grid-template-columns: 1fr 2fr auto auto;
   gap: 10px;
 }
+
 .topbar input {
   height: 42px;
   padding: 0 14px;
@@ -54,6 +71,7 @@ html, body {
   background: #0b0b0b;
   color: #fff;
 }
+
 .topbar button {
   height: 42px;
   padding: 0 18px;
@@ -61,18 +79,20 @@ html, body {
   font-weight: 600;
   cursor: pointer;
 }
+
 .reset {
   background: #000;
   border: 1px solid #fff;
   color: #fff;
 }
+
 .search {
   background: #ef4444;
   border: none;
   color: #fff;
 }
 
-/* MAIN */
+/* ================= MAIN ================= */
 .main {
   flex: 1;
   display: grid;
@@ -81,7 +101,7 @@ html, body {
   min-height: 0;
 }
 
-/* LEFT PANEL */
+/* ================= LEFT PANEL ================= */
 .list {
   background: #0b0b0b;
   border: 1px solid #fff;
@@ -91,25 +111,29 @@ html, body {
   scrollbar-width: thin;
   scrollbar-color: #ef4444 transparent;
 }
+
 .list::-webkit-scrollbar { width: 6px; }
 .list::-webkit-scrollbar-thumb {
   background: #ef4444;
   border-radius: 6px;
 }
 
-/* GROUP */
+/* ================= GROUP ================= */
 .group { margin-bottom: 16px; }
+
 .group-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
 }
+
 .group-title {
   font-size: 12px;
   color: #ef4444;
   text-transform: uppercase;
 }
+
 .select-all {
   font-size: 12px;
   color: #ef4444;
@@ -131,6 +155,7 @@ html, body {
   font-size: 12px;
   background: #0b0b0b;
 }
+
 .item label {
   display: flex;
   gap: 8px;
@@ -139,7 +164,7 @@ html, body {
   text-overflow: ellipsis;
 }
 
-/* RIGHT PANEL */
+/* ================= RIGHT PANEL ================= */
 .right {
   display: flex;
   flex-direction: column;
@@ -157,13 +182,14 @@ html, body {
   display: flex;
   flex-direction: column;
 }
+
 .preview h3 {
   font-size: 12px;
   color: #ef4444;
   margin-bottom: 8px;
 }
 
-/* preview-box default untuk query */
+/* preview-box */
 .preview-box {
   flex: 1;
   border: 1px dashed #fff;
@@ -175,7 +201,7 @@ html, body {
   overflow-y: auto;
 }
 
-/* ALERT SELALU DI TENGAH */
+/* ALERT */
 .preview-box.alert {
   display: flex;
   align-items: center;
@@ -192,11 +218,13 @@ html, body {
   border-radius: 14px;
   padding: 12px;
 }
+
 .ref h3 {
   font-size: 12px;
   color: #ef4444;
   margin-bottom: 6px;
 }
+
 .ref a {
   display: block;
   font-size: 12px;
@@ -204,6 +232,7 @@ html, body {
   text-decoration: none;
   margin-bottom: 4px;
 }
+
 .ref a:hover { text-decoration: underline; }
 
 /* RESPONSIVE */
@@ -216,42 +245,44 @@ html, body {
 <body>
 <div class="app">
 
-<div class="header">
-  <img src="./logo-bssa.jpg" alt="BSSA Logo">
-  <h1>Patroli Siber</h1>
-  <div class="subtitle">Red Team Assessment - BSSA</div>
-  <div class="desc">Deteksi indikasi Deface, Judi Online, Malware, dan Backdoor menggunakan Metode Google Dorking</div>
-</div>
-
-<div class="topbar">
-  <input id="domain" placeholder="Target Domain (target.com)">
-  <input id="customDork" placeholder="Custom Dorking Payload (Optional)">
-  <button class="reset" onclick="resetAll()">Reset</button>
-  <button class="search" onclick="search()">Search</button>
-</div>
-
-<div class="main">
-  <div class="list" id="dorkList"></div>
-
-  <div class="right">
-    <div class="preview">
-      <h3>Payload Google Dorking Preview</h3>
-      <div id="previewQuery" class="preview-box alert">
-        ❗ Isi target domain dan pilihan terlebih dahulu
-      </div>
-    </div>
-
-    <div class="ref">
-      <h3>Referensi Payload Google Dorking</h3>
-      <a href="https://www.exploit-db.com/google-hacking-database" target="_blank" rel="noopener noreferrer">
-        https://www.exploit-db.com/google-hacking-database
-      </a>
-      <a href="https://owasp.org/www-community/attacks/Google_Hacking" target="_blank" rel="noopener noreferrer">
-        https://owasp.org/www-community/attacks/Google_Hacking
-      </a>
+  <div class="header">
+    <img src="./logo-bssa.jpg" alt="BSSA Logo">
+    <h1>Patroli Siber</h1>
+    <div class="subtitle">Red Team Assessment - BSSA</div>
+    <div class="desc">
+      Deteksi indikasi Deface, Judi Online, Malware, dan Backdoor menggunakan Metode Google Dorking
     </div>
   </div>
-</div>
+
+  <div class="topbar">
+    <input id="domain" placeholder="Target Domain (target.com)">
+    <input id="customDork" placeholder="Custom Dorking Payload (Optional)">
+    <button class="reset" onclick="resetAll()">Reset</button>
+    <button class="search" onclick="search()">Search</button>
+  </div>
+
+  <div class="main">
+    <div class="list" id="dorkList"></div>
+
+    <div class="right">
+      <div class="preview">
+        <h3>Payload Google Dorking Preview</h3>
+        <div id="previewQuery" class="preview-box alert">
+          ❗ Isi target domain dan pilihan terlebih dahulu
+        </div>
+      </div>
+
+      <div class="ref">
+        <h3>Referensi Payload Google Dorking</h3>
+        <a href="https://www.exploit-db.com/google-hacking-database" target="_blank" rel="noopener noreferrer">
+          https://www.exploit-db.com/google-hacking-database
+        </a>
+        <a href="https://owasp.org/www-community/attacks/Google_Hacking" target="_blank" rel="noopener noreferrer">
+          https://owasp.org/www-community/attacks/Google_Hacking
+        </a>
+      </div>
+    </div>
+  </div>
 
 </div>
 
@@ -320,7 +351,6 @@ function buildQuery(target, selected, custom) {
   return `site:${target} ` + parts.join(" OR ");
 }
 
-/* ===== LOGIC PREVIEW (SESUAI REQUEST) ===== */
 function updatePreview() {
   const target = domain.value.trim();
   const selected = [...document.querySelectorAll(".chk:checked")].map(c => c.dataset.dork);
@@ -329,28 +359,24 @@ function updatePreview() {
   const hasDomain = !!target;
   const hasAnyDork = selected.length > 0 || !!custom;
 
-  // 1) kosong semua
   if (!hasDomain && !hasAnyDork) {
     preview.classList.add("alert");
     preview.textContent = "❗ Isi target domain dan pilihan terlebih dahulu";
     return;
   }
 
-  // 2) domain kosong, tapi pilihan ada
   if (!hasDomain && hasAnyDork) {
     preview.classList.add("alert");
     preview.textContent = "❗ Isi target domain terlebih dahulu";
     return;
   }
 
-  // 3) domain ada, tapi pilihan kosong
   if (hasDomain && !hasAnyDork) {
     preview.classList.add("alert");
     preview.textContent = "❗ Pilih minimal satu indikator";
     return;
   }
 
-  // 4) valid
   preview.classList.remove("alert");
   preview.textContent = buildQuery(target, selected, custom);
 }
@@ -361,7 +387,10 @@ function search() {
     alert(preview.textContent.replace("❗ ", ""));
     return;
   }
-  window.open("https://www.google.com/search?q=" + encodeURIComponent(preview.textContent), "_blank");
+  window.open(
+    "https://www.google.com/search?q=" + encodeURIComponent(preview.textContent),
+    "_blank"
+  );
 }
 
 function resetAll() {
@@ -371,14 +400,15 @@ function resetAll() {
   updatePreview();
 }
 
-/* EVENTS */
 document.addEventListener("change", e => {
-  if (e.target.classList.contains("chk") || e.target.classList.contains("selectAll")) updatePreview();
+  if (e.target.classList.contains("chk") || e.target.classList.contains("selectAll")) {
+    updatePreview();
+  }
 });
+
 domain.addEventListener("input", updatePreview);
 customDork.addEventListener("input", updatePreview);
 
-/* init */
 updatePreview();
 </script>
 
