@@ -24,15 +24,15 @@
     /* LOGO */
     .logo {
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
 
     .logo img {
-        max-height: 90px;
+        max-height: 85px;
     }
 
     h1 {
-        margin: 10px 0 5px 0;
+        margin: 8px 0 4px 0;
         color: #ef4444;
         font-size: 24px;
         text-align: center;
@@ -42,19 +42,19 @@
         text-align: center;
         font-size: 13px;
         color: #94a3b8;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
     }
 
     p {
         font-size: 13px;
         color: #cbd5f5;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
     }
 
     .input-group {
         display: flex;
         gap: 8px;
-        margin: 10px 0;
+        margin: 8px 0;
     }
 
     input {
@@ -86,14 +86,14 @@
         font-size: 12px;
     }
 
-    /* IFRAME DIPERKECIL LAGI */
+    /* IFRAME DIPERKECIL AGAR MUAT 1 LAYAR */
     .iframe-wrapper {
-        margin-top: 10px;
+        margin-top: 8px;
         border: 2px solid #ef4444;
         border-radius: 8px;
         overflow: hidden;
         background: #000;
-        height: 300px;
+        height: 280px;
     }
 
     iframe {
@@ -103,7 +103,7 @@
     }
 
     .mitigation {
-        margin-top: 12px;
+        margin-top: 10px;
         padding: 10px;
         background: #020617;
         border-left: 4px solid #22c55e;
@@ -126,10 +126,11 @@
         margin-top: 6px;
         font-size: 11px;
         color: #93c5fd;
+        word-break: break-all;
     }
 
     .footer {
-        margin-top: 8px;
+        margin-top: 6px;
         font-size: 10px;
         color: #64748b;
         text-align: center;
@@ -141,16 +142,16 @@
 
 <div class="container">
 
-    <!-- LOGO -->
+    <!-- LOGO BSSA -->
     <div class="logo">
-        <img src="logo-bssa.png" alt="BSSA Logo">
+        <img src="./logo-bssa.jpg" alt="BSSA Logo">
     </div>
 
     <h1>Clickjacking Testing Tool</h1>
     <div class="subtitle">Red Team Assessment – BSSA</div>
 
     <p>
-        Pengujian ini bertujuan untuk mengidentifikasi apakah halaman web dapat dimuat
+        Pengujian ini bertujuan untuk memastikan apakah halaman web dapat dimuat
         di dalam <code>&lt;iframe&gt;</code>.  
         Jika halaman berhasil ditampilkan, maka target
         <b style="color:#ef4444;">berpotensi rentan terhadap Clickjacking</b>.
