@@ -5,95 +5,96 @@
 <title>Clickjacking Testing Tool</title>
 
 <style>
+    * {
+        box-sizing: border-box;
+    }
+
     body {
         margin: 0;
+        height: 100vh;
+        overflow: hidden; /* PAKSA 1 LAYAR */
         font-family: "Segoe UI", Arial, sans-serif;
-        background-color: #000;
+        background: radial-gradient(circle at top, #020617, #000);
         color: #e5e7eb;
     }
 
     .container {
+        height: 100vh;
         max-width: 1200px;
-        margin: 15px auto;
-        padding: 20px;
-        background: #020617;
-        border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0,0,0,0.8);
+        margin: auto;
+        padding: 14px 18px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
-    /* LOGO */
-    .logo {
+    /* HEADER */
+    .header {
         text-align: center;
-        margin-bottom: 8px;
     }
 
-    .logo img {
-        max-height: 85px;
+    .header img {
+        max-height: 60px;
+        margin-bottom: 4px;
     }
 
     h1 {
-        margin: 8px 0 4px 0;
+        margin: 4px 0 2px 0;
+        font-size: 22px;
         color: #ef4444;
-        font-size: 24px;
-        text-align: center;
     }
 
     .subtitle {
-        text-align: center;
-        font-size: 13px;
+        font-size: 12px;
         color: #94a3b8;
-        margin-bottom: 10px;
     }
 
-    p {
-        font-size: 13px;
-        color: #cbd5f5;
-        margin-bottom: 6px;
+    .desc {
+        font-size: 12px;
+        margin-top: 6px;
+        line-height: 1.4;
     }
 
+    /* INPUT */
     .input-group {
         display: flex;
-        gap: 8px;
+        gap: 6px;
         margin: 8px 0;
     }
 
     input {
         flex: 1;
-        padding: 8px;
+        padding: 7px;
         border-radius: 6px;
         border: none;
-        font-size: 13px;
-        outline: none;
-    }
-
-    button {
-        padding: 8px 18px;
-        background: #ef4444;
-        border: none;
-        border-radius: 6px;
-        font-weight: bold;
-        font-size: 13px;
-        cursor: pointer;
-        color: #fff;
-    }
-
-    button:hover {
-        background: #dc2626;
-    }
-
-    .status {
-        margin-top: 5px;
         font-size: 12px;
     }
 
-    /* IFRAME DIPERKECIL AGAR MUAT 1 LAYAR */
+    button {
+        padding: 7px 16px;
+        border: none;
+        border-radius: 6px;
+        background: #ef4444;
+        color: #fff;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    /* STATUS */
+    .status {
+        font-size: 11px;
+        margin-bottom: 4px;
+    }
+
+    /* IFRAME */
     .iframe-wrapper {
-        margin-top: 8px;
+        flex: 1;
         border: 2px solid #ef4444;
         border-radius: 8px;
         overflow: hidden;
         background: #000;
-        height: 280px;
+        margin-bottom: 6px;
     }
 
     iframe {
@@ -102,38 +103,30 @@
         border: none;
     }
 
+    /* MITIGASI */
     .mitigation {
-        margin-top: 10px;
-        padding: 10px;
-        background: #020617;
+        font-size: 11px;
+        padding: 6px 10px;
         border-left: 4px solid #22c55e;
-        font-size: 12px;
-        color: #d1fae5;
+        background: #020617;
+        line-height: 1.4;
     }
 
     .mitigation code {
         display: block;
         background: #000;
-        padding: 6px;
+        padding: 5px;
         border-radius: 6px;
-        margin-top: 5px;
+        margin-top: 4px;
+        font-size: 10px;
         color: #86efac;
-        font-size: 11px;
         white-space: pre-wrap;
     }
 
     .references {
-        margin-top: 6px;
-        font-size: 11px;
-        color: #93c5fd;
-        word-break: break-all;
-    }
-
-    .footer {
-        margin-top: 6px;
         font-size: 10px;
-        color: #64748b;
-        text-align: center;
+        color: #93c5fd;
+        margin-top: 2px;
     }
 </style>
 </head>
@@ -142,21 +135,19 @@
 
 <div class="container">
 
-    <!-- LOGO BSSA -->
-    <div class="logo">
+    <!-- HEADER -->
+    <div class="header">
         <img src="./logo-bssa.jpg" alt="BSSA Logo">
+        <h1>Clickjacking Testing Tool</h1>
+        <div class="subtitle">Red Team Assessment – BSSA</div>
+        <div class="desc">
+            Pengujian untuk memastikan apakah halaman web dapat dimuat di dalam
+            <code>&lt;iframe&gt;</code>. Jika berhasil, target
+            <b style="color:#ef4444;">berpotensi rentan terhadap Clickjacking</b>.
+        </div>
     </div>
 
-    <h1>Clickjacking Testing Tool</h1>
-    <div class="subtitle">Red Team Assessment – BSSA</div>
-
-    <p>
-        Pengujian ini bertujuan untuk memastikan apakah halaman web dapat dimuat
-        di dalam <code>&lt;iframe&gt;</code>.  
-        Jika halaman berhasil ditampilkan, maka target
-        <b style="color:#ef4444;">berpotensi rentan terhadap Clickjacking</b>.
-    </p>
-
+    <!-- INPUT -->
     <div class="input-group">
         <input type="text" id="targetUrl" placeholder="https://target-website.com">
         <button onclick="testClickjacking()">Uji</button>
@@ -164,48 +155,39 @@
 
     <div class="status" id="status"></div>
 
+    <!-- IFRAME -->
     <div class="iframe-wrapper">
         <iframe id="testFrame"></iframe>
     </div>
 
+    <!-- MITIGASI -->
     <div class="mitigation">
-        <strong>Mitigasi:</strong><br>
-        Batasi pemuatan halaman ke dalam iframe menggunakan HTTP Security Header.
+        <strong>Mitigasi:</strong> Terapkan HTTP Security Header.
         <code>
 X-Frame-Options: DENY
 X-Frame-Options: SAMEORIGIN
-Content-Security-Policy: frame-ancestors 'none';
+CSP: frame-ancestors 'none';
         </code>
-        <strong>Referensi:</strong>
         <div class="references">
             https://cheatsheetseries.owasp.org/cheatsheets/Clickjacking_Defense_Cheat_Sheet.html<br>
             https://www.rfc-editor.org/rfc/rfc7034
         </div>
     </div>
 
-    <div class="footer">
-        ⚠️ Authorized Security Testing Only – Red Team BSSA
-    </div>
-
 </div>
 
 <script>
-    function testClickjacking() {
-        const url = document.getElementById("targetUrl").value;
-        const frame = document.getElementById("testFrame");
-        const status = document.getElementById("status");
-
-        if (!url) {
-            alert("Masukkan URL target terlebih dahulu.");
-            return;
-        }
-
-        frame.src = url;
-        status.innerHTML = `
-            <strong>Target:</strong> ${url}<br>
-            <span style="color:#ef4444;">Iframe berhasil dimuat (indikasi Clickjacking)</span>
-        `;
+function testClickjacking() {
+    const url = document.getElementById("targetUrl").value;
+    if (!url) {
+        alert("Masukkan URL target terlebih dahulu.");
+        return;
     }
+    document.getElementById("testFrame").src = url;
+    document.getElementById("status").innerHTML =
+        "<strong>Target:</strong> " + url +
+        " — <span style='color:#ef4444;'>iframe berhasil dimuat</span>";
+}
 </script>
 
 </body>
