@@ -24,6 +24,7 @@ body {
     flex-direction: column;
 }
 
+/* HEADER */
 .header {
     text-align: center;
 }
@@ -48,6 +49,7 @@ h1 {
     margin-top: 6px;
 }
 
+/* INPUT */
 .input-group {
     display: flex;
     gap: 6px;
@@ -73,40 +75,64 @@ button {
     cursor: pointer;
 }
 
+/* STATUS + BADGE */
 .status {
     font-size: 11px;
     margin-bottom: 6px;
 }
 
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-left: 6px;
+}
+
+.badge.vulnerable {
+    background: #dc2626;
+    color: #fff;
+}
+
+.badge.safe {
+    background: #16a34a;
+    color: #fff;
+}
+
+/* IFRAME */
 .iframe-wrapper {
+    position: relative;
     flex: 1;
     border: 2px solid #ef4444;
     border-radius: 8px;
     overflow: hidden;
-    background: #000;
+    background: #111;
 }
 
 iframe {
     width: 100%;
     height: 100%;
     border: none;
+    background: #111;
 }
 
-.mobile-actions {
+/* OVERLAY */
+#iframeOverlay {
     display: none;
-    margin-top: 8px;
+    position: absolute;
+    inset: 0;
+    background: #111;
+    color: #86efac;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
 }
 
-.mobile-actions a {
-    display: inline-block;
-    padding: 6px 10px;
-    background: #0ea5e9;
-    color: #fff;
-    border-radius: 6px;
-    font-size: 11px;
-    text-decoration: none;
-}
-
+/* MITIGATION */
 .mitigation {
     margin-top: 8px;
     font-size: 11px;
@@ -131,13 +157,10 @@ iframe {
     margin-top: 2px;
 }
 
-/* MOBILE MODE */
+/* MOBILE */
 @media (max-width: 768px) {
     .iframe-wrapper {
         display: none;
-    }
-    .mobile-actions {
-        display: block;
     }
 }
 </style>
@@ -166,12 +189,9 @@ iframe {
 
     <div class="iframe-wrapper">
         <iframe id="testFrame"></iframe>
-    </div>
-
-    <div class="mobile-actions" id="mobileActions">
-        <a id="openTarget" href="#" target="_blank">Buka Target di Tab Baru</a>
-        <div style="font-size:10px; color:#fbbf24; margin-top:4px;">
-            Browser mobile membatasi iframe. Gunakan desktop untuk validasi clickjacking.
+        <div id="iframeOverlay">
+            Iframe diblokir oleh target.<br>
+            <b>NOT VULNERABLE</b>
         </div>
     </div>
 
@@ -198,11 +218,33 @@ function testClickjacking() {
         return;
     }
 
-    document.getElementById("status").innerHTML =
-        "<strong>Target:</strong> " + url;
+    const frame = document.getElementById("testFrame");
+    const overlay = document.getElementById("iframeOverlay");
+    const status = document.getElementById("status");
 
-    document.getElementById("testFrame").src = url;
-    document.getElementById("openTarget").href = url;
+    overlay.style.display = "none";
+    frame.src = url;
+
+    status.innerHTML =
+        "<strong>Target:</strong> " + url +
+        "<span class='badge vulnerable'>VULNERABLE</span>";
+
+    setTimeout(() => {
+        try {
+            const doc = frame.contentDocument || frame.contentWindow.document;
+            if (!doc || doc.body.innerHTML.length < 20) {
+                overlay.style.display = "flex";
+                status.innerHTML =
+                    "<strong>Target:</strong> " + url +
+                    "<span class='badge safe'>NOT VULNERABLE</span>";
+            }
+        } catch (e) {
+            overlay.style.display = "flex";
+            status.innerHTML =
+                "<strong>Target:</strong> " + url +
+                "<span class='badge safe'>NOT VULNERABLE</span>";
+        }
+    }, 1500);
 }
 </script>
 
