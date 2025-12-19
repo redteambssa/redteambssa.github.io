@@ -13,7 +13,7 @@ html, body {
     height: 100%;
     overflow: hidden;
     font-family: "Segoe UI", Arial, sans-serif;
-    background: radial-gradient(circle at top, #020617, #000);
+    background: #000;
     color: #e5e7eb;
 }
 
@@ -37,15 +37,16 @@ html, body {
 .header h1 {
     margin: 4px 0 2px;
     font-size: 22px;
-    color: #ef4444;
+    color: #fff;
 }
 .subtitle {
     font-size: 12px;
-    color: #94a3b8;
+    color: #9ca3af;
 }
 .desc {
     font-size: 12px;
     margin-top: 6px;
+    color: #d1d5db;
 }
 
 /* INPUT */
@@ -60,21 +61,28 @@ html, body {
     border-radius: 6px;
     border: none;
     font-size: 12px;
+    background: #111;
+    color: #fff;
+}
+.input-group input::placeholder {
+    color: #6b7280;
 }
 .input-group button {
     padding: 7px 16px;
     border: none;
     border-radius: 6px;
-    background: #ef4444;
+    background: #000;
     color: #fff;
     font-size: 12px;
     font-weight: bold;
     cursor: pointer;
+    border: 1px solid #333;
 }
 
 .status {
     font-size: 11px;
     margin-bottom: 4px;
+    color: #d1d5db;
 }
 
 /* IFRAME */
@@ -84,16 +92,16 @@ html, body {
 .iframe-wrapper {
     position: relative;
     height: 100%;
-    border: 2px solid #ef4444;
+    border: 2px solid #000;
     border-radius: 8px;
     overflow: hidden;
-    background: #111;
+    background: #000;
 }
 iframe {
     width: 100%;
     height: 100%;
     border: none;
-    background: #111;
+    background: #000;
 }
 
 /* OVERLAY */
@@ -103,8 +111,8 @@ iframe {
     display: none;
     align-items: center;
     justify-content: center;
-    background: #111;
-    color: #22c55e;
+    background: #000;
+    color: #fff;
     font-size: 13px;
     text-align: center;
     padding: 20px;
@@ -115,8 +123,8 @@ iframe {
     margin-top: 6px;
     font-size: 11px;
     padding: 6px 10px;
-    border-left: 4px solid #22c55e;
-    background: #020617;
+    border-left: 4px solid #000;
+    background: #000;
     line-height: 1.4;
 }
 .mitigation code {
@@ -126,11 +134,11 @@ iframe {
     border-radius: 6px;
     margin-top: 4px;
     font-size: 10px;
-    color: #86efac;
+    color: #e5e7eb;
 }
 .references {
     font-size: 10px;
-    color: #93c5fd;
+    color: #9ca3af;
     margin-top: 2px;
     word-break: break-all;
 }
@@ -200,7 +208,7 @@ function testClickjacking() {
 
     status.innerHTML =
         "<strong>Target:</strong> " + url +
-        " — <span style='color:#fbbf24;'>pengujian iframe</span>";
+        " — <span style='color:#fff;'>pengujian iframe</span>";
 
     let loaded = false;
 
@@ -208,7 +216,7 @@ function testClickjacking() {
         loaded = true;
         status.innerHTML =
             "<strong>Target:</strong> " + url +
-            " — <span style='color:#ef4444;'>iframe berhasil dimuat</span>";
+            " — <span style='color:#fff;'>iframe berhasil dimuat</span>";
     };
 
     setTimeout(() => {
@@ -216,7 +224,7 @@ function testClickjacking() {
             overlay.style.display = "flex";
             status.innerHTML =
                 "<strong>Target:</strong> " + url +
-                " — <span style='color:#22c55e;'>iframe diblok (protected)</span>";
+                " — <span style='color:#fff;'>iframe diblok (protected)</span>";
         }
     }, 2000);
 }
