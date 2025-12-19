@@ -2,132 +2,144 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Clickjacking Testing Tool</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-    }
+* { box-sizing: border-box; }
 
-    body {
-        margin: 0;
-        height: 100vh;
-        overflow: hidden; /* PAKSA 1 LAYAR */
-        font-family: "Segoe UI", Arial, sans-serif;
-        background: radial-gradient(circle at top, #020617, #000);
-        color: #e5e7eb;
-    }
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: radial-gradient(circle at top, #020617, #000);
+    color: #e5e7eb;
+}
 
-    .container {
-        height: 100vh;
-        max-width: 1200px;
-        margin: auto;
-        padding: 14px 18px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
+.container {
+    min-height: 100vh;
+    max-width: 1200px;
+    margin: auto;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+}
 
-    /* HEADER */
-    .header {
-        text-align: center;
-    }
+.header {
+    text-align: center;
+}
 
-    .header img {
-        max-height: 60px;
-        margin-bottom: 4px;
-    }
+.header img {
+    max-height: 60px;
+}
 
-    h1 {
-        margin: 4px 0 2px 0;
-        font-size: 22px;
-        color: #ef4444;
-    }
+h1 {
+    margin: 6px 0 2px;
+    font-size: 22px;
+    color: #ef4444;
+}
 
-    .subtitle {
-        font-size: 12px;
-        color: #94a3b8;
-    }
+.subtitle {
+    font-size: 12px;
+    color: #94a3b8;
+}
 
-    .desc {
-        font-size: 12px;
-        margin-top: 6px;
-        line-height: 1.4;
-    }
+.desc {
+    font-size: 12px;
+    margin-top: 6px;
+}
 
-    /* INPUT */
-    .input-group {
-        display: flex;
-        gap: 6px;
-        margin: 8px 0;
-    }
+.input-group {
+    display: flex;
+    gap: 6px;
+    margin: 10px 0;
+}
 
-    input {
-        flex: 1;
-        padding: 7px;
-        border-radius: 6px;
-        border: none;
-        font-size: 12px;
-    }
+input {
+    flex: 1;
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    font-size: 12px;
+}
 
-    button {
-        padding: 7px 16px;
-        border: none;
-        border-radius: 6px;
-        background: #ef4444;
-        color: #fff;
-        font-size: 12px;
-        font-weight: bold;
-        cursor: pointer;
-    }
+button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    background: #ef4444;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-    /* STATUS */
-    .status {
-        font-size: 11px;
-        margin-bottom: 4px;
-    }
+.status {
+    font-size: 11px;
+    margin-bottom: 6px;
+}
 
-    /* IFRAME */
+.iframe-wrapper {
+    flex: 1;
+    border: 2px solid #ef4444;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #000;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.mobile-actions {
+    display: none;
+    margin-top: 8px;
+}
+
+.mobile-actions a {
+    display: inline-block;
+    padding: 6px 10px;
+    background: #0ea5e9;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 11px;
+    text-decoration: none;
+}
+
+.mitigation {
+    margin-top: 8px;
+    font-size: 11px;
+    padding: 6px;
+    border-left: 4px solid #22c55e;
+    background: #020617;
+}
+
+.mitigation code {
+    display: block;
+    background: #000;
+    padding: 4px;
+    border-radius: 6px;
+    margin-top: 4px;
+    font-size: 10px;
+    color: #86efac;
+}
+
+.references {
+    font-size: 10px;
+    color: #93c5fd;
+    margin-top: 2px;
+}
+
+/* MOBILE MODE */
+@media (max-width: 768px) {
     .iframe-wrapper {
-        flex: 1;
-        border: 2px solid #ef4444;
-        border-radius: 8px;
-        overflow: hidden;
-        background: #000;
-        margin-bottom: 6px;
+        display: none;
     }
-
-    iframe {
-        width: 100%;
-        height: 100%;
-        border: none;
-    }
-
-    /* MITIGASI */
-    .mitigation {
-        font-size: 11px;
-        padding: 6px 10px;
-        border-left: 4px solid #22c55e;
-        background: #020617;
-        line-height: 1.4;
-    }
-
-    .mitigation code {
+    .mobile-actions {
         display: block;
-        background: #000;
-        padding: 5px;
-        border-radius: 6px;
-        margin-top: 4px;
-        font-size: 10px;
-        color: #86efac;
-        white-space: pre-wrap;
     }
-
-    .references {
-        font-size: 10px;
-        color: #93c5fd;
-        margin-top: 2px;
-    }
+}
 </style>
 </head>
 
@@ -135,19 +147,16 @@
 
 <div class="container">
 
-    <!-- HEADER -->
     <div class="header">
         <img src="./logo-bssa.jpg" alt="BSSA Logo">
         <h1>Clickjacking Testing Tool</h1>
         <div class="subtitle">Red Team Assessment – BSSA</div>
         <div class="desc">
             Pengujian untuk memastikan apakah halaman web dapat dimuat di dalam
-            <code>&lt;iframe&gt;</code>. Jika berhasil, target
-            <b style="color:#ef4444;">berpotensi rentan terhadap Clickjacking</b>.
+            <code>&lt;iframe&gt;</code>.
         </div>
     </div>
 
-    <!-- INPUT -->
     <div class="input-group">
         <input type="text" id="targetUrl" placeholder="https://target-website.com">
         <button onclick="testClickjacking()">Uji</button>
@@ -155,14 +164,19 @@
 
     <div class="status" id="status"></div>
 
-    <!-- IFRAME -->
     <div class="iframe-wrapper">
         <iframe id="testFrame"></iframe>
     </div>
 
-    <!-- MITIGASI -->
+    <div class="mobile-actions" id="mobileActions">
+        <a id="openTarget" href="#" target="_blank">Buka Target di Tab Baru</a>
+        <div style="font-size:10px; color:#fbbf24; margin-top:4px;">
+            Browser mobile membatasi iframe. Gunakan desktop untuk validasi clickjacking.
+        </div>
+    </div>
+
     <div class="mitigation">
-        <strong>Mitigasi:</strong> Terapkan HTTP Security Header.
+        <strong>Mitigasi:</strong>
         <code>
 X-Frame-Options: DENY
 X-Frame-Options: SAMEORIGIN
@@ -183,10 +197,12 @@ function testClickjacking() {
         alert("Masukkan URL target terlebih dahulu.");
         return;
     }
-    document.getElementById("testFrame").src = url;
+
     document.getElementById("status").innerHTML =
-        "<strong>Target:</strong> " + url +
-        " — <span style='color:#ef4444;'>iframe berhasil dimuat</span>";
+        "<strong>Target:</strong> " + url;
+
+    document.getElementById("testFrame").src = url;
+    document.getElementById("openTarget").href = url;
 }
 </script>
 
