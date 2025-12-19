@@ -220,7 +220,7 @@ html, body {
   <img src="./logo-bssa.jpg" alt="BSSA Logo">
   <h1>Patroli Siber</h1>
   <div class="subtitle">Red Team Assessment - BSSA</div>
-  <div class="desc">Deteksi indikasi Deface, Judi Online, Malware, dan Backdoor menggunakan Metode Google Dorking</div>
+  <div class="desc">Deteksi indikasi Deface, Judi Online, Malware & Backdoor menggunakan Metode Google Dorking</div>
 </div>
 
 <div class="topbar">
@@ -262,12 +262,12 @@ const dorks = {
     'intext:"Hacked By"', 'intext:"Site Defaced"', 'intext:"Was Here"',
     'intitle:"Deface Page"', 'intext:"H4cked"', 'intext:"Defaced"'
   ],
-  "Judi Online": [
+  "Judi Online indicator": [
     'intext:"slot"', 'intext:"judol"', 'intext:"casino online"',
     'intext:"judi online"', 'intext:"togel"', 'intext:"bet"',
     'intext:"slot gacor"', 'intext:"maxwin"', 'intext:"live casino"'
   ],
-  "Malware dan Backdoor": [
+  "Malware & Backdoor indicator": [
     'inurl:shell.php', 'inurl:c99.php', 'inurl:r57.php',
     'inurl:cmd.php', 'inurl:upload.php', 'inurl:backdoor.php',
     'intext:"eval(base64_decode"', 'intext:"system($_GET"',
@@ -343,7 +343,7 @@ function updatePreview() {
 
   if (hasDomain && !hasAnyDork) {
     preview.classList.add("alert");
-    preview.textContent = "❗ Pilih minimal satu indikator";
+    preview.textContent = "❗ Pilih minimal satu indicators";
     return;
   }
 
