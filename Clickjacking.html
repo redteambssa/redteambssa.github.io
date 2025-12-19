@@ -15,54 +15,55 @@ body {
     color: #e5e7eb;
 }
 
-/* CONTAINER */
 .container {
-    height: 100vh;
+    min-height: 100vh;
     max-width: 1200px;
     margin: auto;
-    padding: 14px 18px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
 }
 
-/* HEADER */
 .header {
     text-align: center;
 }
+
 .header img {
     max-height: 60px;
-    margin-bottom: 4px;
 }
+
 h1 {
-    margin: 4px 0 2px;
+    margin: 6px 0 2px;
     font-size: 22px;
     color: #ef4444;
 }
+
 .subtitle {
     font-size: 12px;
     color: #94a3b8;
 }
+
 .desc {
     font-size: 12px;
     margin-top: 6px;
-    line-height: 1.4;
 }
 
-/* INPUT */
 .input-group {
     display: flex;
     gap: 6px;
-    margin: 8px 0;
+    margin: 10px 0;
 }
+
 input {
     flex: 1;
-    padding: 7px;
+    padding: 8px;
     border-radius: 6px;
     border: none;
     font-size: 12px;
 }
+
 button {
-    padding: 7px 16px;
+    padding: 8px 16px;
     border: none;
     border-radius: 6px;
     background: #ef4444;
@@ -72,72 +73,71 @@ button {
     cursor: pointer;
 }
 
-/* STATUS */
 .status {
     font-size: 11px;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
-/* IFRAME */
 .iframe-wrapper {
-    position: relative;
     flex: 1;
     border: 2px solid #ef4444;
     border-radius: 8px;
     overflow: hidden;
-    background: #111;
-    margin-bottom: 6px;
+    background: #000;
 }
+
 iframe {
     width: 100%;
     height: 100%;
     border: none;
-    background: #111;
 }
 
-/* OVERLAY */
-#iframeOverlay {
+.mobile-actions {
     display: none;
-    position: absolute;
-    inset: 0;
-    background: #111;
-    color: #22c55e;
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 20px;
+    margin-top: 8px;
 }
 
-/* MITIGATION */
-.mitigation {
-    font-size: 11px;
+.mobile-actions a {
+    display: inline-block;
     padding: 6px 10px;
+    background: #0ea5e9;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 11px;
+    text-decoration: none;
+}
+
+.mitigation {
+    margin-top: 8px;
+    font-size: 11px;
+    padding: 6px;
     border-left: 4px solid #22c55e;
     background: #020617;
-    line-height: 1.4;
 }
+
 .mitigation code {
     display: block;
     background: #000;
-    padding: 5px;
+    padding: 4px;
     border-radius: 6px;
     margin-top: 4px;
     font-size: 10px;
     color: #86efac;
 }
+
 .references {
     font-size: 10px;
     color: #93c5fd;
     margin-top: 2px;
-    word-break: break-all;
 }
 
-/* MOBILE */
+/* MOBILE MODE */
 @media (max-width: 768px) {
     .iframe-wrapper {
         display: none;
+    }
+    .mobile-actions {
+        display: block;
     }
 }
 </style>
@@ -147,18 +147,16 @@ iframe {
 
 <div class="container">
 
-    <!-- HEADER -->
     <div class="header">
         <img src="./logo-bssa.jpg" alt="BSSA Logo">
         <h1>Clickjacking Testing Tool</h1>
         <div class="subtitle">Red Team Assessment – BSSA</div>
         <div class="desc">
-            Pengujian untuk memastikan apakah halaman web dapat dimuat
-            di dalam <code>&lt;iframe&gt;</code>.
+            Pengujian untuk memastikan apakah halaman web dapat dimuat di dalam
+            <code>&lt;iframe&gt;</code>.
         </div>
     </div>
 
-    <!-- INPUT -->
     <div class="input-group">
         <input type="text" id="targetUrl" placeholder="https://target-website.com">
         <button onclick="testClickjacking()">Uji</button>
@@ -166,23 +164,23 @@ iframe {
 
     <div class="status" id="status"></div>
 
-    <!-- IFRAME -->
     <div class="iframe-wrapper">
         <iframe id="testFrame"></iframe>
-        <div id="iframeOverlay">
-            Iframe diblokir oleh target.<br>
-            Target <b>tidak rentan terhadap Clickjacking</b>.
+    </div>
+
+    <div class="mobile-actions" id="mobileActions">
+        <a id="openTarget" href="#" target="_blank">Buka Target di Tab Baru</a>
+        <div style="font-size:10px; color:#fbbf24; margin-top:4px;">
+            Browser mobile membatasi iframe. Gunakan desktop untuk validasi clickjacking.
         </div>
     </div>
 
-    <!-- MITIGATION -->
     <div class="mitigation">
         <strong>Mitigasi:</strong>
-        Batasi pemuatan halaman ke dalam iframe menggunakan HTTP Security Header.
         <code>
 X-Frame-Options: DENY
 X-Frame-Options: SAMEORIGIN
-Content-Security-Policy: frame-ancestors 'none';
+CSP: frame-ancestors 'none';
         </code>
         <div class="references">
             https://cheatsheetseries.owasp.org/cheatsheets/Clickjacking_Defense_Cheat_Sheet.html<br>
@@ -200,33 +198,11 @@ function testClickjacking() {
         return;
     }
 
-    const frame = document.getElementById("testFrame");
-    const overlay = document.getElementById("iframeOverlay");
-    const status = document.getElementById("status");
+    document.getElementById("status").innerHTML =
+        "<strong>Target:</strong> " + url;
 
-    overlay.style.display = "none";
-    frame.src = url;
-
-    status.innerHTML =
-        "<strong>Target:</strong> " + url +
-        " — <span style='color:#fbbf24;'>pengujian iframe</span>";
-
-    setTimeout(() => {
-        try {
-            const doc = frame.contentDocument || frame.contentWindow.document;
-            if (!doc || doc.body.innerHTML.length < 20) {
-                overlay.style.display = "flex";
-                status.innerHTML =
-                    "<strong>Target:</strong> " + url +
-                    " — <span style='color:#22c55e;'>iframe diblok (protected)</span>";
-            }
-        } catch (e) {
-            overlay.style.display = "flex";
-            status.innerHTML =
-                "<strong>Target:</strong> " + url +
-                " — <span style='color:#22c55e;'>iframe diblok (protected)</span>";
-        }
-    }, 1500);
+    document.getElementById("testFrame").src = url;
+    document.getElementById("openTarget").href = url;
 }
 </script>
 
