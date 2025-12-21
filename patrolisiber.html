@@ -6,239 +6,221 @@
 <title>Patroli Siber – BSSA</title>
 
 <style>
-* { box-sizing: border-box; }
-
-html, body {
-  margin: 0;
-  height: 100%;
-  font-family: Inter, "Segoe UI", Arial, sans-serif;
-  background: #000;
-  color: #e5e7eb;
+:root{
+  --glass:rgba(255,255,255,.05);
+  --border:rgba(255,255,255,.14);
+  --red:#ef4444;
+  --red-soft:rgba(239,68,68,.18);
+  --glow-strong:0 0 18px rgba(239,68,68,.95);
+  --glow-soft:0 0 6px rgba(239,68,68,.5);
+  --text:#fff;
+  --muted:#aaa;
 }
 
-.app {
-  height: 100vh;
-  max-width: 1440px;
-  margin: auto;
-  padding: 12px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+*{box-sizing:border-box}
+html,body{
+  margin:0;height:100%;
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  background:radial-gradient(circle at top,#1a0000 0%,#050505 60%);
+  color:var(--text);
 }
+
+.app{
+  height:100vh;
+  max-width:1500px;
+  margin:auto;
+  padding:16px 20px;
+  display:grid;
+  grid-template-rows:auto auto 1fr auto;
+  gap:14px;
+}
+
+/* BADGE */
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 16px;
+  border-radius:999px;
+  background:var(--red-soft);
+  border:1px solid var(--red);
+  font-size:11px;
+  font-weight:700;
+}
+.badge.live{box-shadow:var(--glow-strong)}
+.badge.on{box-shadow:var(--glow-strong)}
 
 /* HEADER */
-.header {
-  text-align: center;
-  border-bottom: 1px solid #fff;
-  padding-bottom: 10px;
+.header{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:18px;
+  padding:18px 22px;
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:18px;
 }
-.header img { height: 26px; }
-.header h1 {
-  margin: 6px 0 0;
-  font-size: 22px;
-  color: #ef4444;
+.header img{height:36px}
+.header-center h1{
+  margin:0;
+  font-size:26px;
+  color:var(--red);
+  text-shadow:var(--glow-strong);
 }
-.subtitle, .desc { font-size: 13px; color: #fff; }
+.header-center .desc{
+  margin-top:4px;
+  font-size:12px;
+  color:var(--muted);
+}
 
 /* TOPBAR */
-.topbar {
-  display: grid;
-  grid-template-columns: 1fr 2fr auto auto;
-  gap: 10px;
+.topbar{
+  display:grid;
+  grid-template-columns:1fr 2fr auto auto;
+  gap:12px;
 }
-.topbar input {
-  height: 42px;
-  padding: 0 14px;
-  border-radius: 12px;
-  border: 1px solid #fff;
-  background: #0b0b0b;
-  color: #fff;
+.topbar input{
+  height:44px;
+  padding:0 14px;
+  border-radius:12px;
+  background:var(--glass);
+  border:1px solid var(--border);
+  color:#fff;
 }
-.topbar button {
-  height: 42px;
-  padding: 0 18px;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
+.topbar input:focus{outline:none;border-color:var(--red)}
+.topbar button{
+  height:44px;
+  padding:0 22px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
 }
-.reset {
-  background: #000;
-  border: 1px solid #fff;
-  color: #fff;
+.reset{
+  background:transparent;
+  border:1px solid var(--border);
+  color:#fff;
 }
-.search {
-  background: #ef4444;
-  border: none;
-  color: #fff;
+.search{
+  border:none;
+  background:linear-gradient(135deg,#b91c1c,#ef4444);
+  color:#fff;
 }
 
 /* MAIN */
-.main {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1.3fr 0.7fr;
-  gap: 14px;
-  min-height: 0;
+.main{
+  display:grid;
+  grid-template-columns:1.45fr .55fr;
+  gap:14px;
+  min-height:0;
 }
 
-/* LEFT PANEL */
-.list {
-  background: #0b0b0b;
-  border: 1px solid #fff;
-  border-radius: 14px;
-  padding: 14px;
-  overflow-y: auto;
+/* LIST */
+.list{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:14px;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
 
-  /* SCROLLBAR FIREFOX */
-  scrollbar-width: thin;
-  scrollbar-color: #ef4444 transparent;
+  scrollbar-width:thin;
+  scrollbar-color:#ef4444 transparent;
 }
-
-/* SCROLLBAR CHROME / EDGE / SAFARI */
-.list::-webkit-scrollbar {
-  width: 5px;                /* DIPERKECIL */
-}
-.list::-webkit-scrollbar-track {
-  background: transparent;
-}
-.list::-webkit-scrollbar-thumb {
-  background: #ef4444;       /* MERAH */
-  border-radius: 6px;
+.list::-webkit-scrollbar{width:6px}
+.list::-webkit-scrollbar-thumb{
+  background:#ef4444;
+  border-radius:6px;
 }
 
 /* GROUP */
-.group { margin-bottom: 16px; }
-
-.group-head {
-  display: flex;
-  align-items: center;
-  gap: 12px;                 /* JARAK JUDUL & PILIH SEMUA */
-  margin-bottom: 8px;
+.group{
+  background:rgba(0,0,0,.35);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:14px;
+}
+.group-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
 }
 
-.group-title {
-  font-size: 12px;
-  color: #ef4444;
-  text-transform: uppercase;
-  white-space: nowrap;
+/* ITEMS */
+.group-items{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+}
+.item{
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:12px;
+  font-size:12px;
+}
+.item.active{
+  background:rgba(239,68,68,.12);
+  border-color:var(--red);
+  box-shadow:var(--glow-soft);
 }
 
-/* PILIH SEMUA – DEKAT JUDUL */
-.select-all {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  font-size: 12px;
-  color: #fff;
-  user-select: none;
+/* CHECKBOX */
+.chk-circle{
+  appearance:none;
+  width:14px;height:14px;
+  border-radius:50%;
+  border:2px solid var(--red);
+  cursor:pointer;
 }
+.chk-circle:checked{background:var(--red)}
+label{display:flex;gap:8px;align-items:center;cursor:pointer}
 
-/* GRID 3x3 */
-.group-items {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-
-/* ITEM */
-.item {
-  border: 1px solid #333;
-  border-left: 4px solid #ef4444;
-  border-radius: 10px;
-  padding: 6px 8px;
-  font-size: 12px;
-  background: #0b0b0b;
-}
-
-/* ===== CIRCLE CHECKBOX (ITEM + PILIH SEMUA) ===== */
-.chk-circle {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 2px solid #ef4444;
-  background: transparent;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.chk-circle:checked {
-  background: #ef4444;
-  box-shadow: 0 0 0 2px rgba(239,68,68,.25);
-}
-
-.item label,
-.select-all {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-
-/* RIGHT PANEL */
-.right {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+/* RIGHT */
+.right{display:flex;flex-direction:column;gap:14px}
+.preview,.ref{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:16px;
 }
 
 /* PREVIEW */
-.preview {
-  flex: 1;
-  background: #0b0b0b;
-  border: 1px solid #fff;
-  border-radius: 14px;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
+.preview-box{
+  margin-top:12px;
+  font-size:13px;
+  padding:16px;
+  border-radius:12px;
+  background:#000;
+  border:1px dashed var(--red);
+  min-height:120px;
+  white-space:pre-wrap;
 }
-.preview h3 {
-  font-size: 12px;
-  color: #ef4444;
-  margin-bottom: 8px;
-}
-.preview-box {
-  flex: 1;
-  border: 1px dashed #fff;
-  border-radius: 10px;
-  padding: 10px;
-  font-size: 12px;
-  white-space: pre-wrap;
-  overflow-y: auto;
-}
-.preview-box.alert {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fca5a5;
-  font-style: italic;
+.preview-box.alert{color:#fecaca;font-weight:600}
+.alert-line{display:flex;gap:8px;margin-bottom:6px}
+.alert-icon{
+  font-size:18px;
+  filter:drop-shadow(0 0 6px rgba(239,68,68,.9));
 }
 
-/* REFERENSI */
-.ref {
-  background: #0b0b0b;
-  border: 1px solid #fff;
-  border-radius: 14px;
-  padding: 12px;
+/* REF */
+.ref a{
+  display:block;
+  margin-top:8px;
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:rgba(0,0,0,.4);
+  color:#fff;
+  text-decoration:none;
+  font-size:12px;
 }
-.ref h3 {
-  font-size: 12px;
-  color: #ef4444;
-  margin-bottom: 6px;
-}
-.ref a {
-  display: block;
-  font-size: 12px;
-  color: #93c5fd;
-  text-decoration: none;
-}
-.ref a:hover { text-decoration: underline; }
+.ref a:hover{border-color:var(--red)}
 
-@media (max-width: 1100px) {
-  .main { grid-template-columns: 1fr; }
-}
+.footer{text-align:center;font-size:11px;color:#888}
 </style>
 </head>
 
@@ -246,19 +228,21 @@ html, body {
 <div class="app">
 
 <div class="header">
-  <img src="./logo-bssa.jpg" alt="BSSA Logo">
-  <h1>Patroli Siber</h1>
-  <div class="subtitle">Red Team Assessment - BSSA</div>
-  <div class="desc">
-    Deteksi Indikasi Deface, Judi Online, Malware & Backdoor Dengan Metode Google Dorking
+  <img src="./logo-bssa.jpg">
+  <div class="header-center">
+    <h1>Patroli Siber</h1>
+    <div class="desc">
+      Deteksi Indikasi Defacement, Judi Online, Malware & Backdoor Dengan Metode Google Dorking
+    </div>
   </div>
+  <div class="badge live">🔴 Live BSSA Assessment</div>
 </div>
 
 <div class="topbar">
-  <input id="domain" placeholder="Target Domain (target.com)">
+  <input id="domain" placeholder="Target Domain (example.com)">
   <input id="customDork" placeholder="Custom Dorking Payload (Optional)">
-  <button class="reset" onclick="resetAll()">Reset</button>
-  <button class="search" onclick="search()">Search</button>
+  <button class="reset" id="btnReset">Reset</button>
+  <button class="search" id="btnSearch">Search</button>
 </div>
 
 <div class="main">
@@ -266,137 +250,154 @@ html, body {
 
   <div class="right">
     <div class="preview">
-      <h3>Payload Google Dorking Preview</h3>
-      <div id="previewQuery" class="preview-box alert">
-        ❗ Isi target domain dan pilihan terlebih dahulu
-      </div>
+      <div class="badge">Payload Google Dorking Preview</div>
+      <div id="preview" class="preview-box alert"></div>
     </div>
 
     <div class="ref">
-      <h3>Referensi Payload Google Dorking</h3>
-      <a href="https://www.exploit-db.com/google-hacking-database" target="_blank">Exploit DB</a>
-      <a href="https://owasp.org/www-community/attacks/Google_Hacking" target="_blank">OWASP</a>
+      <div class="badge">Referensi Payload Google Dorking</div>
+      <a href="https://www.exploit-db.com/google-hacking-database" target="_blank" rel="noopener">Exploit DB</a>
+      <a href="https://owasp.org/www-community/attacks/Google_Hacking" target="_blank" rel="noopener">OWASP</a>
     </div>
   </div>
 </div>
 
+<div class="footer">Copyright © 2025 BSSA</div>
 </div>
 
 <script>
-const dorks = {
-  "Deface Indicators": [
-    'intitle:"Defaced by"', 'intitle:"Hacked by"', 'intitle:"Owned by"',
-    'intext:"Hacked By"', 'intext:"Site Defaced"', 'intext:"Was Here"',
-    'intitle:"Deface Page"', 'intext:"H4cked"', 'intext:"Defaced"'
-  ],
-  "Judi Online Indicators": [
-    'intext:"slot"', 'intext:"judol"', 'intext:"casino online"',
-    'intext:"judi online"', 'intext:"togel"', 'intext:"bet"',
-    'intext:"slot gacor"', 'intext:"maxwin"', 'intext:"live casino"'
-  ],
-  "Malware & Backdoor Indicators": [
-    'inurl:shell.php', 'inurl:c99.php', 'inurl:r57.php',
-    'inurl:cmd.php', 'inurl:upload.php', 'inurl:backdoor.php',
-    'intext:"eval(base64_decode"', 'intext:"system($_GET"',
-    'intext:"passthru("'
-  ]
+(() => {
+"use strict";
+
+const DATA={
+ "Defacement Indicators":[
+  'intitle:"defaced"','intitle:"hacked by"','intitle:"owned by"','intitle:"pwned"',
+  'intext:"site defaced"','intext:"defaced by"','intext:"hacked by"','intext:"was here"',
+  'intitle:"deface page"','intext:"hacked"','intext:"defaced"','intext:"security breach"',
+  'intext:"pwned"','intext:"h4cked"','intext:"owned"','intext:"anonymous"'
+ ],
+ "Judi Online Indicators":[
+  'intext:"slot"','intext:"judol"','intext:"casino online"','intext:"judi online"',
+  'intext:"togel"','intext:"bet"','intext:"slot gacor"','intext:"maxwin"',
+  'intext:"live casino"','intext:"deposit"','intext:"withdraw"','intext:"bandar togel"',
+  'intext:"agen judi"','intext:"bonus member"','intext:"daftar slot"','intext:"betting"'
+ ],
+ "Malware & Backdoor Indicators":[
+  'inurl:shell.php','inurl:c99.php','inurl:r57.php','inurl:wso.php',
+  'inurl:cmd.php','inurl:upload.php','inurl:backdoor.php','inurl:mini.php',
+  'intext:"eval(base64_decode"','intext:"base64_decode("','intext:"system($_GET"',
+  'intext:"shell_exec("','intext:"passthru("','intext:"php_uname("',
+  'intext:"chmod 777"','intext:"preg_replace(/e"'
+ ]
 };
 
-const list = document.getElementById("dorkList");
-const preview = document.getElementById("previewQuery");
-const domain = document.getElementById("domain");
-const customDork = document.getElementById("customDork");
+const list=document.getElementById("dorkList");
+const domain=document.getElementById("domain");
+const custom=document.getElementById("customDork");
+const preview=document.getElementById("preview");
 
-for (const group in dorks) {
-  const g = document.createElement("div");
-  g.className = "group";
-  g.innerHTML = `
-    <div class="group-head">
-      <div class="group-title">${group}</div>
-      <label class="select-all">
-        <input type="checkbox" class="chk-circle selectAll">
-        Pilih Semua
-      </label>
-    </div>
-    <div class="group-items"></div>
-  `;
+function showAlert(dm,im){
+ preview.className="preview-box alert";
+ preview.innerHTML="";
+ if(dm) preview.innerHTML+=`<div class="alert-line"><span class="alert-icon">🚨</span>Domain wajib diinput</div>`;
+ if(im) preview.innerHTML+=`<div class="alert-line"><span class="alert-icon">🚨</span>Pilih indikator atau Input custom dorking payload</div>`;
+}
 
-  const container = g.querySelector(".group-items");
+function updatePreview(){
+ const d=domain.value.trim();
+ const checked=[...document.querySelectorAll(".chk:checked")];
+ const c=custom.value.trim();
 
-  dorks[group].forEach(d => {
-    container.innerHTML += `
-      <div class="item">
-        <label>
-          <input type="checkbox" class="chk chk-circle" data-dork='${d}'>
-          ${d}
-        </label>
-      </div>`;
-  });
+ const dm=!d;
+ const im=!checked.length && !c;
 
-  g.querySelector(".selectAll").addEventListener("change", e => {
-    container.querySelectorAll(".chk").forEach(c => c.checked = e.target.checked);
+ if(dm || im){ showAlert(dm,im); return; }
+
+ preview.className="preview-box";
+ preview.textContent=`site:${d} ${checked.map(x=>x.value).join(" OR ")}${c?` OR ${c}`:""}`;
+}
+
+function updateGroup(group){
+ const items=[...group.querySelectorAll(".chk")];
+ const title=group.querySelector(".group-title");
+ const selectAll=group.querySelector(".selectAll");
+ const active=items.some(c=>c.checked);
+
+ title.classList.toggle("on",active);
+ selectAll.checked=items.every(c=>c.checked);
+}
+
+Object.entries(DATA).forEach(([title,items])=>{
+ const g=document.createElement("div");
+ g.className="group";
+
+ const h=document.createElement("div");
+ h.className="group-head";
+
+ const badge=document.createElement("div");
+ badge.className="badge group-title";
+ badge.textContent=title;
+
+ const saLabel=document.createElement("label");
+ saLabel.className="badge";
+ const sa=document.createElement("input");
+ sa.type="checkbox";
+ sa.className="chk-circle selectAll";
+ saLabel.append(sa,document.createTextNode(" Pilih Semua"));
+
+ h.append(badge,saLabel);
+
+ const grid=document.createElement("div");
+ grid.className="group-items";
+
+ items.forEach(v=>{
+  const item=document.createElement("div");
+  item.className="item";
+  const chk=document.createElement("input");
+  chk.type="checkbox";
+  chk.className="chk chk-circle";
+  chk.value=v;
+  chk.onchange=()=>{
+    item.classList.toggle("active",chk.checked);
+    updateGroup(g);
     updatePreview();
+  };
+  const lbl=document.createElement("label");
+  lbl.append(chk,document.createTextNode(" "+v));
+  item.append(lbl);
+  grid.append(item);
+ });
+
+ sa.onchange=()=>{
+  grid.querySelectorAll(".chk").forEach(c=>{
+    c.checked=sa.checked;
+    c.closest(".item").classList.toggle("active",sa.checked);
   });
-
-  list.appendChild(g);
-}
-
-function buildQuery(target, selected, custom) {
-  const parts = [];
-  if (selected.length) parts.push(selected.join(" OR "));
-  if (custom) parts.push(custom);
-  return `site:${target} ` + parts.join(" OR ");
-}
-
-function updatePreview() {
-  const target = domain.value.trim();
-  const selected = [...document.querySelectorAll(".chk:checked")].map(c => c.dataset.dork);
-  const custom = customDork.value.trim();
-
-  if (!target && !selected.length && !custom) {
-    preview.className = "preview-box alert";
-    preview.textContent = "❗ Isi target domain dan pilihan terlebih dahulu";
-    return;
-  }
-  if (!target) {
-    preview.className = "preview-box alert";
-    preview.textContent = "❗ Isi target domain terlebih dahulu";
-    return;
-  }
-  if (!selected.length && !custom) {
-    preview.className = "preview-box alert";
-    preview.textContent = "❗ Pilih minimal satu indikator";
-    return;
-  }
-
-  preview.className = "preview-box";
-  preview.textContent = buildQuery(target, selected, custom);
-}
-
-function search() {
+  updateGroup(g);
   updatePreview();
-  if (preview.classList.contains("alert")) {
-    alert(preview.textContent.replace("❗ ", ""));
-    return;
-  }
-  window.open("https://www.google.com/search?q=" + encodeURIComponent(preview.textContent));
-}
+ };
 
-function resetAll() {
-  domain.value = "";
-  customDork.value = "";
-  document.querySelectorAll("input[type=checkbox]").forEach(c => c.checked = false);
-  updatePreview();
-}
-
-document.addEventListener("change", e => {
-  if (e.target.matches(".chk,.selectAll")) updatePreview();
+ g.append(h,grid);
+ list.append(g);
+ updateGroup(g);
 });
-domain.addEventListener("input", updatePreview);
-customDork.addEventListener("input", updatePreview);
+
+domain.oninput=custom.oninput=updatePreview;
+document.getElementById("btnReset").onclick=()=>{
+ domain.value=""; custom.value="";
+ document.querySelectorAll(".chk").forEach(c=>c.checked=false);
+ document.querySelectorAll(".item").forEach(i=>i.classList.remove("active"));
+ document.querySelectorAll(".group").forEach(updateGroup);
+ updatePreview();
+};
+document.getElementById("btnSearch").onclick=()=>{
+ updatePreview();
+ if(!preview.classList.contains("alert"))
+  window.open("https://www.google.com/search?q="+encodeURIComponent(preview.textContent));
+};
 
 updatePreview();
+})();
 </script>
-
 </body>
 </html>
