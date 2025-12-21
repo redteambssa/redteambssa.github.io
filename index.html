@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Red Team BSSA - Tools Assessment</title>
+
+<style>
+:root{
+  --glass:rgba(255,255,255,.06);
+  --border:rgba(255,255,255,.14);
+  --red:#ef4444;
+  --red-soft:rgba(239,68,68,.18);
+  --glow-strong:0 0 18px rgba(239,68,68,.95);
+  --glow-soft:0 0 6px rgba(239,68,68,.5);
+  --text:#fff;
+  --muted:#aaa;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{
+  margin:0;min-height:100%;
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  background:radial-gradient(circle at top,#1a0000 0%,#050505 60%);
+  color:var(--text);
+}
+.app{
+  min-height:100vh;
+  max-width:1500px;
+  margin:auto;
+  padding:16px;
+  display:grid;
+  grid-template-rows:auto auto 1fr auto;
+  gap:14px;
+}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:7px 16px;border-radius:999px;
+  background:var(--red-soft);
+  border:1px solid var(--red);
+  font-size:11px;font-weight:700;user-select:none;
+}
+.badge.live{box-shadow:var(--glow-strong)}
+.header{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:18px;
+  padding:18px;
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:18px;
+}
+.header img{height:36px}
+.header-center h1{
+  margin:0;
+  font-size:26px;
+  color:var(--red);
+  text-shadow:var(--glow-strong);
+}
+.header-center .desc{margin-top:4px;font-size:12px;color:var(--muted)}
+.topbar{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:12px;
+}
+.topbar input{
+  height:46px;
+  padding:0 14px;
+  border-radius:12px;
+  background:var(--glass);
+  border:1px solid var(--border);
+  color:#fff;
+}
+.topbar input:focus{outline:none;border-color:var(--red)}
+.topbar button{
+  height:46px;
+  padding:0 22px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
+  transition:.2s;
+}
+.topbar button:active{transform:scale(.97)}
+.search{
+  border:none;
+  background:linear-gradient(135deg,#b91c1c,#ef4444);
+  color:#fff;
+}
+.list{
+  background:var(--glass);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:14px;
+  overflow:auto;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+/* TOOLS GRID */
+.tools-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:14px;
+}
+.tool-card{
+  display:block;
+  padding:16px;
+  border-radius:16px;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--border);
+  text-decoration:none;
+  color:#fff;
+  transition:.25s;
+}
+.tool-card:hover{
+  border-color:var(--red);
+  box-shadow:var(--glow-soft);
+  transform:translateY(-2px);
+}
+.tool-title{font-size:15px;font-weight:800;color:var(--red)}
+.tool-desc{margin-top:6px;font-size:12px;color:var(--muted)}
+.footer{
+  text-align:center;
+  font-size:11px;
+  color:#888;
+  padding:10px 0;
+  user-select:none;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+  .header{grid-template-columns:1fr;text-align:center}
+  .topbar{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<!-- HEADER -->
+<div class="header">
+  <img src="./logo-bssa.jpg" alt="BSSA Logo">
+  <div class="header-center">
+    <h1>Red Team BSSA</h1>
+    <div class="desc">Security Tools Assessment & Red Team Labs</div>
+  </div>
+  <div class="badge live">🔴 Live BSSA Assessment</div>
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <input id="searchBox" placeholder="Cari tool… (contoh: patrol, clickjack, xss)">
+  <button class="search" id="btnRefresh">Refresh</button>
+</div>
+
+<!-- LIST -->
+<div class="list">
+  <div class="badge">🧰 Available Tools (Auto)</div>
+  <div class="tools-grid" id="toolsGrid">
+    <div class="tool-desc">Loading tools…</div>
+  </div>
+</div>
+
+<div class="footer">Copyright © 2025 BSSA</div>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  const GRID = document.getElementById("toolsGrid");
+  const SEARCH = document.getElementById("searchBox");
+  const BTN = document.getElementById("btnRefresh");
+
+  // IMPORTANT: sesuaikan kalau repo kamu beda
+  const OWNER = "redteambssa";
+  const REPO  = "redteambssa.github.io";
+
+  async function loadTools(){
+    GRID.innerHTML = '<div class="tool-desc">Loading tools…</div>';
+
+    try{
+      const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents`);
+      const files = await res.json();
+
+      const htmlFiles = (files || [])
+        .filter(f => f && f.name && f.name.endsWith(".html") && f.name !== "index.html")
+        .map(f => ({ name: f.name, url: f.name }));
+
+      if(!htmlFiles.length){
+        GRID.innerHTML = '<div class="tool-desc">Tidak ada file .html selain index.html</div>';
+        return;
+      }
+
+      render(htmlFiles);
+    }catch(e){
+      GRID.innerHTML = '<div class="tool-desc">Gagal load list (cek koneksi / nama repo)</div>';
+    }
+  }
+
+  function render(items){
+    const q = (SEARCH.value || "").toLowerCase().trim();
+
+    const filtered = items.filter(x => x.name.toLowerCase().includes(q));
+
+    GRID.innerHTML = "";
+    filtered.forEach(x => {
+      const a = document.createElement("a");
+      a.className = "tool-card";
+      a.href = x.url;
+      a.innerHTML = `
+        <div class="tool-title">${x.name.replace(".html","")}</div>
+        <div class="tool-desc">Click to open assessment tool</div>
+      `;
+      GRID.appendChild(a);
+    });
+
+    if(!filtered.length){
+      GRID.innerHTML = '<div class="tool-desc">Tidak ada yang cocok dengan pencarian.</div>';
+    }
+  }
+
+  // Reload & search
+  BTN.onclick = loadTools;
+  SEARCH.oninput = async () => {
+    // re-render dari DOM yang sudah ada => reload paling aman: load ulang tools list
+    await loadTools();
+  };
+
+  loadTools();
+})();
+</script>
+
+</body>
+</html>
