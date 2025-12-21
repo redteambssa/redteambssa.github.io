@@ -7,7 +7,7 @@
 
 <style>
 :root{
-  --glass:rgba(255,255,255,.05);
+  --glass:rgba(255,255,255,.06);
   --border:rgba(255,255,255,.14);
   --red:#ef4444;
   --red-soft:rgba(239,68,68,.18);
@@ -17,19 +17,25 @@
   --muted:#aaa;
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
 html,body{
-  margin:0;height:100%;
+  margin:0;
+  min-height:100%;
   font-family:Inter,Segoe UI,Arial,sans-serif;
   background:radial-gradient(circle at top,#1a0000 0%,#050505 60%);
   color:var(--text);
 }
 
+/* APP */
 .app{
-  height:100vh;
+  min-height:100vh;
   max-width:1500px;
   margin:auto;
-  padding:16px 20px;
+  padding:16px;
   display:grid;
   grid-template-rows:auto auto 1fr auto;
   gap:14px;
@@ -46,8 +52,9 @@ html,body{
   border:1px solid var(--red);
   font-size:11px;
   font-weight:700;
+  user-select:none;
 }
-.badge.live{box-shadow:var(--glow-strong)}
+.badge.live,
 .badge.on{box-shadow:var(--glow-strong)}
 
 /* HEADER */
@@ -56,7 +63,7 @@ html,body{
   grid-template-columns:auto 1fr auto;
   align-items:center;
   gap:18px;
-  padding:18px 22px;
+  padding:18px;
   background:var(--glass);
   border:1px solid var(--border);
   border-radius:18px;
@@ -81,21 +88,26 @@ html,body{
   gap:12px;
 }
 .topbar input{
-  height:44px;
+  height:46px;
   padding:0 14px;
   border-radius:12px;
   background:var(--glass);
   border:1px solid var(--border);
   color:#fff;
 }
-.topbar input:focus{outline:none;border-color:var(--red)}
+.topbar input:focus{
+  outline:none;
+  border-color:var(--red);
+}
 .topbar button{
-  height:44px;
+  height:46px;
   padding:0 22px;
   border-radius:12px;
   cursor:pointer;
   font-weight:600;
+  transition:.2s;
 }
+.topbar button:active{transform:scale(.97)}
 .reset{
   background:transparent;
   border:1px solid var(--border);
@@ -121,18 +133,10 @@ html,body{
   border:1px solid var(--border);
   border-radius:18px;
   padding:14px;
-  overflow-y:auto;
+  overflow:auto;
   display:flex;
   flex-direction:column;
   gap:18px;
-
-  scrollbar-width:thin;
-  scrollbar-color:#ef4444 transparent;
-}
-.list::-webkit-scrollbar{width:6px}
-.list::-webkit-scrollbar-thumb{
-  background:#ef4444;
-  border-radius:6px;
 }
 
 /* GROUP */
@@ -146,6 +150,7 @@ html,body{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  gap:10px;
   margin-bottom:12px;
 }
 
@@ -161,6 +166,7 @@ html,body{
   border-radius:12px;
   padding:12px;
   font-size:12px;
+  transition:.2s;
 }
 .item.active{
   background:rgba(239,68,68,.12);
@@ -171,16 +177,26 @@ html,body{
 /* CHECKBOX */
 .chk-circle{
   appearance:none;
-  width:14px;height:14px;
+  width:16px;
+  height:16px;
   border-radius:50%;
   border:2px solid var(--red);
   cursor:pointer;
 }
 .chk-circle:checked{background:var(--red)}
-label{display:flex;gap:8px;align-items:center;cursor:pointer}
+label{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  cursor:pointer;
+}
 
 /* RIGHT */
-.right{display:flex;flex-direction:column;gap:14px}
+.right{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
 .preview,.ref{
   background:var(--glass);
   border:1px solid var(--border);
@@ -198,9 +214,17 @@ label{display:flex;gap:8px;align-items:center;cursor:pointer}
   border:1px dashed var(--red);
   min-height:120px;
   white-space:pre-wrap;
+  word-break:break-word;
 }
-.preview-box.alert{color:#fecaca;font-weight:600}
-.alert-line{display:flex;gap:8px;margin-bottom:6px}
+.preview-box.alert{
+  color:#fecaca;
+  font-weight:600;
+}
+.alert-line{
+  display:flex;
+  gap:8px;
+  margin-bottom:6px;
+}
 .alert-icon{
   font-size:18px;
   filter:drop-shadow(0 0 6px rgba(239,68,68,.9));
@@ -210,7 +234,7 @@ label{display:flex;gap:8px;align-items:center;cursor:pointer}
 .ref a{
   display:block;
   margin-top:8px;
-  padding:10px 12px;
+  padding:12px;
   border-radius:10px;
   border:1px solid var(--border);
   background:rgba(0,0,0,.4);
@@ -220,13 +244,37 @@ label{display:flex;gap:8px;align-items:center;cursor:pointer}
 }
 .ref a:hover{border-color:var(--red)}
 
-.footer{text-align:center;font-size:11px;color:#888}
+/* FOOTER */
+.footer{
+  text-align:center;
+  font-size:11px;
+  color:#888;
+  padding:10px 0;
+  user-select:none;
+}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .main{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .header{
+    grid-template-columns:1fr;
+    text-align:center;
+  }
+  .topbar{grid-template-columns:1fr}
+  .group-items{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:480px){
+  .group-items{grid-template-columns:1fr}
+}
 </style>
 </head>
 
 <body>
 <div class="app">
 
+<!-- HEADER -->
 <div class="header">
   <img src="./logo-bssa.jpg">
   <div class="header-center">
@@ -238,6 +286,7 @@ label{display:flex;gap:8px;align-items:center;cursor:pointer}
   <div class="badge live">🔴 Live BSSA Assessment</div>
 </div>
 
+<!-- TOPBAR -->
 <div class="topbar">
   <input id="domain" placeholder="Target Domain (example.com)">
   <input id="customDork" placeholder="Custom Dorking Payload (Optional)">
@@ -245,6 +294,7 @@ label{display:flex;gap:8px;align-items:center;cursor:pointer}
   <button class="search" id="btnSearch">Search</button>
 </div>
 
+<!-- MAIN -->
 <div class="main">
   <div class="list" id="dorkList"></div>
 
@@ -256,8 +306,8 @@ label{display:flex;gap:8px;align-items:center;cursor:pointer}
 
     <div class="ref">
       <div class="badge">Referensi Payload Google Dorking</div>
-      <a href="https://www.exploit-db.com/google-hacking-database" target="_blank" rel="noopener">Exploit DB</a>
-      <a href="https://dorkfinder.com/" target="_blank" rel="noopener">Dorkfinder</a>
+      <a href="https://www.exploit-db.com/google-hacking-database" target="_blank">Exploit DB</a>
+      <a href="https://dorkfinder.com/" target="_blank">Dorkfinder</a>
     </div>
   </div>
 </div>
@@ -265,6 +315,7 @@ label{display:flex;gap:8px;align-items:center;cursor:pointer}
 <div class="footer">Copyright © 2025 BSSA</div>
 </div>
 
+<!-- ================= LOGIC ASLI (TIDAK DIUBAH) ================= -->
 <script>
 (() => {
 "use strict";
@@ -384,12 +435,14 @@ Object.entries(DATA).forEach(([title,items])=>{
 
 domain.oninput=custom.oninput=updatePreview;
 document.getElementById("btnReset").onclick=()=>{
- domain.value=""; custom.value="";
+ domain.value="";
+ custom.value="";
  document.querySelectorAll(".chk").forEach(c=>c.checked=false);
  document.querySelectorAll(".item").forEach(i=>i.classList.remove("active"));
  document.querySelectorAll(".group").forEach(updateGroup);
  updatePreview();
 };
+
 document.getElementById("btnSearch").onclick=()=>{
  updatePreview();
  if(!preview.classList.contains("alert"))
@@ -399,5 +452,6 @@ document.getElementById("btnSearch").onclick=()=>{
 updatePreview();
 })();
 </script>
+
 </body>
 </html>
