@@ -181,7 +181,7 @@ html,body{
   <div class="badge live">🔴 Live BSSA Assessment</div>
 </div>
 
-<!-- TOPBAR (RESET KIRI, SEARCH KANAN) -->
+<!-- TOPBAR -->
 <div class="topbar">
   <input id="searchBox" placeholder="search tools...">
   <button class="reset" id="btnReset">Reset</button>
@@ -217,7 +217,7 @@ html,body{
       const files = await res.json();
 
       ALL_TOOLS = (files || [])
-        .filter(f => f?.name?.endsWith(".html") && f.name !== "index.html")
+        .filter(f => f.name.endsWith(".html") && f.name !== "index.html")
         .map(f => ({ name: f.name, url: f.name }));
 
       render(ALL_TOOLS);
@@ -232,12 +232,15 @@ html,body{
       const a = document.createElement("a");
       a.className = "tool-card";
       a.href = t.url;
+      a.target = "_blank";                 // 🔥 buka halaman baru
+      a.rel = "noopener noreferrer";
       a.innerHTML = `
         <div class="tool-title">${t.name.replace(".html","")}</div>
         <div class="tool-desc">Click to open assessment tool</div>
       `;
       GRID.appendChild(a);
     });
+
     if(!items.length){
       GRID.innerHTML = '<div class="tool-desc">Tidak ada yang cocok</div>';
     }
